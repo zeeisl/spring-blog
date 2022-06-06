@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <body class="bg-light">
+    <div class="card m-2" th:fragment="article">
+      <img
+        src="https://picsum.photos/id/1/400/300"
+        class="card-img-top"
+        alt="..."
+      />
+      <div class="card-body">
+        <h5 class="card-title h5">
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr
+        </h5>
+        <p class="card-text">
+          Sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
+          aliquyam erat...
+        </p>
+        <a
+          th:href="@{/article}"
+          class="btn btn-outline-secondary d-flex justify-content-center align-content-between mt-4"
+          >Lesen</a
+        >
+      </div>
+
+      <div class="card-footer text-muted">2 days ago</div>
+    </div>
+  </body>
+</html>
