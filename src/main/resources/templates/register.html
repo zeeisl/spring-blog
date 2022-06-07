@@ -7,15 +7,8 @@
     <div class="container mt-2">
       <div class="row d-flex justify-content-center">
         <div class="col-4 mt-4">
-          <form th:action="@{/register}" method="post" modelAttribute="user">
+          <form th:action="@{/register}" method="post" th:object="${registerForm}">
             <h1 class="h3 fw-normal text-center">Registrieren</h1>
-
-            <div class="alert alert-danger mt-3" th:if="${errors != null}">
-              <th:block th:each="error : ${errors}">
-                <span th:text="${error}"></span>
-                <hr />
-              </th:block>
-            </div>
 
             <div
               class="alert alert-success mt-3"
@@ -27,35 +20,46 @@
               <input
                 type="text"
                 class="form-control"
+                th:classappend="${#fields.hasErrors('username')} ? 'is-invalid' : ''"
                 id="username"
-                name="username"
+                th:field="*{username}"
                 placeholder="Benutzername"
-                th:value="${username != null} ? ${username} : ''"
               />
               <label for="username">Benutzername</label>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">
+                Benutzername Fehler
+              </div>
+          
             </div>
 
             <div class="form-floating mt-3">
               <input
                 type="email"
                 class="form-control"
+                th:classappend="${#fields.hasErrors('email')} ? 'is-invalid' : ''"
                 id="email"
-                name="email"
+                th:field="*{email}"
                 placeholder="E-Mail-Adresse"
-                th:value="${email != null} ? ${email} : ''"
               />
               <label for="email">E-Mail-Adresse</label>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                E-Mail-Adresse Fehler
+              </div>
             </div>
 
             <div class="form-floating mt-3">
               <input
                 type="password"
-                name="password"
+                th:field="*{password}"
                 id="password"
                 class="form-control"
+                th:classappend="${#fields.hasErrors('password')} ? 'is-invalid' : ''"
                 placeholder="Passwort"
               />
               <label for="password">Passwort</label>
+              <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+                Passwort Fehler
+              </div>
             </div>
 
             <button class="w-100 btn btn-lg btn-primary mt-3" type="submit">
