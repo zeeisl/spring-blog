@@ -1,4 +1,4 @@
-package de.zeeisl.blog.controllers;
+package de.zeeisl.blog.transitonObjects.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
