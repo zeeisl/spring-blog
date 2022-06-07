@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>blog</title>
-    <link href="/bootstrap.min.css" rel="stylesheet" />
+    <link href="/static/bootstrap.min.css" rel="stylesheet" />
   </head>
   <body class="bg-light">
     <nav
@@ -13,7 +13,7 @@
       aria-label="Eighth navbar example"
     >
       <div class="container">
-        <a class="navbar-brand" href="/home">blog</a>
+        <a class="navbar-brand" href="/">blog</a>
         <button
           class="navbar-toggler"
           type="button"
@@ -49,10 +49,21 @@
           </form>
 
           <ul class="navbar-nav">
-            <li class="nav-item">
+            <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
+              <a class="nav-link dropdown-toggle"id="loggedIn" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <span sec:authentication="name">USER</span>
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="loggedIn">
+                <form th:action="@{/logout}" method="post">
+                  <li><input class="dropdown-item" th:href="@{/logout}" type="submit" value="Logout"/></li>
+                </form>
+              </ul>
+            </li>
+    
+            <li class="nav-item" sec:authorize="isAnonymous()">
               <a class="nav-link" th:href="@{/register}">Registrieren</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" sec:authorize="isAnonymous()">
               <a class="nav-link" th:href="@{/login}">Login</a>
             </li>
           </ul>
@@ -151,7 +162,7 @@
                 </ul>
               </div>
             </div>
-            <script src="/bootstrap.bundle.min.js"></script>
+            <script src="/static/bootstrap.bundle.min.js"></script>
           </footer>
     </div>
     
