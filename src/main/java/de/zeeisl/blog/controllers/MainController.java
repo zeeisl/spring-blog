@@ -13,16 +13,6 @@ public class MainController {
         return "home";
     }
 
-    @GetMapping("/login")
-    String login() {
-        return "login";
-    }
-
-    @GetMapping("/register")
-    String register() {
-        return "register";
-    }
-
     @GetMapping("/article")
     String article() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

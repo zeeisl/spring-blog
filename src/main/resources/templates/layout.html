@@ -53,7 +53,7 @@
               <a class="nav-link dropdown-toggle"id="loggedIn" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 <span sec:authentication="name">USER</span>
               </a>
-              <ul class="dropdown-menu" aria-labelledby="loggedIn">
+              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loggedIn">
                 <form th:action="@{/logout}" method="post">
                   <li><input class="dropdown-item" th:href="@{/logout}" type="submit" value="Logout"/></li>
                 </form>

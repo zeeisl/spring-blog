@@ -7,18 +7,32 @@
     <div class="container mt-2">
       <div class="row d-flex justify-content-center">
         <div class="col-4 mt-4">
-          <form>
+          <form th:action="@{/register}" method="post" modelAttribute="user">
             <h1 class="h3 fw-normal text-center">Registrieren</h1>
+
+            <div class="alert alert-danger mt-3" th:if="${errors != null}">
+              <th:block th:each="error : ${errors}">
+                <span th:text="${error}"></span>
+                <hr />
+              </th:block>
+            </div>
+
+            <div
+              class="alert alert-success mt-3"
+              th:if="${success != null}"
+              th:text="${success}"
+            ></div>
 
             <div class="form-floating mt-3">
               <input
                 type="text"
                 class="form-control"
-                id="name"
-                name="name"
-                placeholder="Name"
+                id="username"
+                name="username"
+                placeholder="Benutzername"
+                th:value="${username != null} ? ${username} : ''"
               />
-              <label for="name">Name</label>
+              <label for="username">Benutzername</label>
             </div>
 
             <div class="form-floating mt-3">
@@ -28,6 +42,7 @@
                 id="email"
                 name="email"
                 placeholder="E-Mail-Adresse"
+                th:value="${email != null} ? ${email} : ''"
               />
               <label for="email">E-Mail-Adresse</label>
             </div>
