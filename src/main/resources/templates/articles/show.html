@@ -4,101 +4,64 @@
   <body class="bg-light">
     <head th:replace="layout :: header"></head>
 
-    <div class="container mt-2">
+    <div class="container mt-3">
       <div class="row d-flex justify-content-center">
-        <div class="col-6 mt-4">
-          <h1 class="h2">
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr
-          </h1>
+        <div class="col-6">
+          <div
+            class="alert alert-success"
+            th:if="${success != null}"
+            th:text="${success}"
+          ></div>
+          
+          <h1 class="h2" th:text="${article.title}"></h1>
+          <p th:text="${article.teaser}"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mt-2" th:if="${article.banner != null}">
+      <div class="row d-flex justify-content-center">
+        <div class="col-8">
+          <img th:src="${article.banner}" class="img-fluid w-100" />
           <p></p>
         </div>
       </div>
     </div>
 
-    <div class="row d-flex justify-content-center">
-      <div class="col-8 mt-4">
-        <img src="https://picsum.photos/id/1/800/600" class="img-fluid w-100" />
-        <p></p>
-      </div>
-    </div>
-
     <div class="container mt-2">
       <div class="row d-flex justify-content-center">
-        <div class="col-6 mt-4">
-          <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet.
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet.
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet.
-          </p>
-          <p>
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
-            nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
-            erat, sed diam voluptua. At vero eos et accusam et justo duo dolores
-            et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est
-            Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur
-            sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore
-            et dolore magna aliquyam erat, sed diam voluptua. At vero eos et
-            accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren,
-            no sea takimata sanctus est Lorem ipsum dolor sit amet.
-          </p>
+        <div class="col-6">
+          <p th:text="${article.text}"></p>
         </div>
       </div>
     </div>
 
     <div class="row d-flex justify-content-center">
-      <div class="col-8 mt-4">
+      <div class="col-8 mt-5">
         <h2 class="h3 text-center">Ähnliche Artikel</h2>
         <div class="row">
-            <div class="p-0 col-12 col-md-6 col-lg-4">
-              <div th:replace="fragments/article/preview_card :: article"></div>
-            </div>
-    
-            <div class="p-0 col-12 col-md-6 col-lg-4">
-              <div th:replace="fragments/article/preview_card :: article"></div>
-            </div>
-            
-            <div class="p-0 col-12 col-md-6 col-lg-4">
-              <div th:replace="fragments/article/preview_card :: article"></div>
-            </div>
-            
-            <div class="p-0 col-12 col-md-6 col-lg-4">
-              <div th:replace="fragments/article/preview_card :: article"></div>
-            </div>
-            
-            <div class="p-0 col-12 col-md-6 col-lg-4">
-              <div th:replace="fragments/article/preview_card :: article"></div>
-            </div>
+          <div class="p-0 col-12 col-md-6 col-lg-4">
+            <div th:replace="fragments/article/preview_card :: article"></div>
           </div>
+
+          <div class="p-0 col-12 col-md-6 col-lg-4">
+            <div th:replace="fragments/article/preview_card :: article"></div>
+          </div>
+
+          <div class="p-0 col-12 col-md-6 col-lg-4">
+            <div th:replace="fragments/article/preview_card :: article"></div>
+          </div>
+
+          <div class="p-0 col-12 col-md-6 col-lg-4">
+            <div th:replace="fragments/article/preview_card :: article"></div>
+          </div>
+
+          <div class="p-0 col-12 col-md-6 col-lg-4">
+            <div th:replace="fragments/article/preview_card :: article"></div>
+          </div>
+        </div>
       </div>
-    </div> 
+    </div>
 
     <head th:replace="layout :: footer"></head>
   </body>
