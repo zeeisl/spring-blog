@@ -7,35 +7,99 @@
     <div class="container mt-2">
       <div class="row d-flex justify-content-center">
         <div class="col-6 mt-4">
-          <form action="#" th:action="@{/articles/}" method="post" th:object="${createArticleForm}">
-
-            <div style="color: green;" th:if="${success != null}" th:text="${success}"></div><br/>
-
-            Titel: <input type="text" th:field="*{title}" placeholder="Titel"> 
-            <div style="color: red;" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+          <form
+            action="#"
+            th:action="@{/articles/}"
+            enctype="multipart/form-data"
+            method="post"
+            th:object="${createArticleForm}"
+          >
+            <div
+              style="color: green"
+              th:if="${success != null}"
+              th:text="${success}"
+            ></div>
             <br />
 
-            Teaser: <input type="text" th:field="*{teaser}" placeholder="Teaser"> 
-            <div style="color: red;" th:if="${#fields.hasErrors('teaser')}" th:errors="*{teaser}"></div>
+            Titel: <input type="text" th:field="*{title}" placeholder="Titel" />
+            <div
+              style="color: red"
+              th:if="${#fields.hasErrors('title')}"
+              th:errors="*{title}"
+            ></div>
+            <br />
+
+            Banner:
+            <input
+              type="hidden"
+              th:field="*{bannerLink}"
+              style="width: 200px; height: auto"
+            />
+            <img
+              th:if="${createArticleForm.bannerLink != null}"
+              th:src="${createArticleForm.bannerLink}"
+              style="width: 200px; height: auto"
+            />
+            <input type="file" th:field="*{banner}" />
+            <div
+              style="color: red"
+              th:if="${#fields.hasErrors('banner')}"
+              th:errors="*{banner}"
+            ></div>
+            <br />
+
+            Teaser:
+            <input type="text" th:field="*{teaser}" placeholder="Teaser" />
+            <div
+              style="color: red"
+              th:if="${#fields.hasErrors('teaser')}"
+              th:errors="*{teaser}"
+            ></div>
             <br />
 
             Text: <textarea cols="30" rows="10" th:field="*{text}"></textarea>
-            <div style="color: red;" th:if="${#fields.hasErrors('text')}" th:errors="*{text}"></div>
+            <div
+              style="color: red"
+              th:if="${#fields.hasErrors('text')}"
+              th:errors="*{text}"
+            ></div>
             <br />
 
-            Veröffentlichen: 
-            <input type="radio" id="now" name="releaseType" value="1" selected="" th:field="*{releaseType}">
+            Veröffentlichen:
+            <input
+              type="radio"
+              id="now"
+              name="releaseType"
+              value="1"
+              selected=""
+              th:field="*{releaseType}"
+            />
             <label for="now">Direkt</label>
-            <input type="radio" id="later" name="releaseType" value="2"  th:field="*{releaseType}">
+            <input
+              type="radio"
+              id="later"
+              name="releaseType"
+              value="2"
+              th:field="*{releaseType}"
+            />
             <label for="css">later</label>
-            <div style="color: red;" th:if="${#fields.hasErrors('releaseType')}" th:errors="*{releaseType}"></div>
+            <div
+              style="color: red"
+              th:if="${#fields.hasErrors('releaseType')}"
+              th:errors="*{releaseType}"
+            ></div>
             <br />
 
-            Veröffentlichungszeitpunkt: <input type="datetime-local" th:field="*{publishDate}"> 
-            <div style="color: red;" th:if="${#fields.hasErrors('publishDate')}" th:errors="*{publishDate}"></div>
+            Veröffentlichungszeitpunkt:
+            <input type="datetime-local" th:field="*{publishDate}" />
+            <div
+              style="color: red"
+              th:if="${#fields.hasErrors('publishDate')}"
+              th:errors="*{publishDate}"
+            ></div>
             <br />
 
-            <input type="submit" value="Artikel veröffentlichen">
+            <input type="submit" value="Artikel veröffentlichen" />
           </form>
           <p></p>
         </div>

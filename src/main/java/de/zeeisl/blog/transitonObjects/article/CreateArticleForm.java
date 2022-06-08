@@ -8,12 +8,16 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.multipart.MultipartFile;
 
 public class CreateArticleForm {
 
     @NotNull
     @Length(min = 5, max = 250, message = "Der Titel muss zwischen 5 und 250 Zeichen lang sein")
     private String title;
+
+    private String bannerLink;
+    private MultipartFile banner;
 
     @NotNull
     @Length(min = 20, max = 250, message = "Der Teaser muss zwischen 20 und 250 Zeichen lang sein")
@@ -71,6 +75,22 @@ public class CreateArticleForm {
 
     public void setReleaseType(int releaseType) {
         this.releaseType = releaseType;
+    }
+
+    public MultipartFile getBanner() {
+        return this.banner;
+    }
+
+    public void setBanner(MultipartFile banner) {
+        this.banner = banner;
+    }
+
+    public String getBannerLink() {
+        return this.bannerLink;
+    }
+
+    public void setBannerLink(String bannerLink) {
+        this.bannerLink = bannerLink;
     }
 
 }

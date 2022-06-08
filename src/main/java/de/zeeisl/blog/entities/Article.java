@@ -21,6 +21,8 @@ public class Article {
     @NotNull
     private String title;
 
+    private String banner;
+
     @NotNull
     private String teaser;
 
@@ -51,6 +53,14 @@ public class Article {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getBanner() {
+        return this.banner;
+    }
+
+    public void setBanner(String banner) {
+        this.banner = banner;
     }
 
     public String getTeaser() {

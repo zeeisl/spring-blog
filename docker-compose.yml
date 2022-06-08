@@ -5,6 +5,7 @@ services:
     image: mariadb:10.3
     environment:
       - MARIADB_ROOT_PASSWORD=password
+      - MARIADB_DATABASE=blog
     ports:
       - 3808:3808
       - 3306:3306

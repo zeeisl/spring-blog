@@ -54,6 +54,8 @@
                 <span sec:authentication="name">USER</span>
               </a>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="loggedIn">
+                <li><a class="dropdown-item" th:href="@{/articles/create}">Artikel schreiben</a></li>
+                <li><hr class="dropdown-divider"></li>
                 <form th:action="@{/logout}" method="post">
                   <li><input class="dropdown-item" th:href="@{/logout}" type="submit" value="Logout"/></li>
                 </form>

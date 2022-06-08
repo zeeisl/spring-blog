@@ -27,12 +27,12 @@ public class AuthController {
 
     @GetMapping("/login")
     String login() {
-        return "login";
+        return "auth/login";
     }
 
     @GetMapping("/register")
     String register(RegisterForm registerForm) {
-        return "register";
+        return "auth/register";
     }
 
     @PostMapping("/register")
@@ -43,7 +43,7 @@ public class AuthController {
         }
 
         if (bindingResult.hasErrors()) {
-            return "register";
+            return "auth/register";
         }
 
         User user = new User();
@@ -55,7 +55,7 @@ public class AuthController {
 
         model.addAttribute("success", "Registrierung erfolgreich.");
 
-        return "register";
+        return "auth/register";
     }
 
 }

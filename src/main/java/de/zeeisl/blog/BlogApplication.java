@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import de.zeeisl.blog.entities.User;
 import de.zeeisl.blog.repositories.UserRepository;
+import de.zeeisl.blog.services.StorageService;
 
 @SpringBootApplication
 public class BlogApplication {
@@ -20,6 +21,9 @@ public class BlogApplication {
 	
     @Autowired
     PasswordEncoder passwordEncoder;
+
+	@Autowired 
+	StorageService storageService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BlogApplication.class, args);
@@ -34,6 +38,8 @@ public class BlogApplication {
 			u.setPassword(passwordEncoder.encode("password"));
 			u.setCreatedAt(new Date());
 			userRepository.save(u);
+
+			storageService.init();
 		};
 	}
 
