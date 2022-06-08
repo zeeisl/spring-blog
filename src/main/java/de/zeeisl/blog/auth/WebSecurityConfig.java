@@ -2,6 +2,7 @@ package de.zeeisl.blog.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.*;
 import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.web.builders.*;
@@ -37,7 +38,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/static/**").permitAll()
+                .antMatchers("/static/**", "/uploads/**").permitAll()
+                .regexMatchers("/articles/\\d+").permitAll()
                 .antMatchers("/", "/home").permitAll()
                 .antMatchers("/register").permitAll()
                 .anyRequest().authenticated()

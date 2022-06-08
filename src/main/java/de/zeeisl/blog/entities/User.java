@@ -1,14 +1,15 @@
 package de.zeeisl.blog.entities;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -33,8 +34,13 @@ public class User implements UserDetails {
     @NotBlank
     private String password;
 
+    private String profilePicture;
+
     @NotNull
     private Date createdAt;
+
+    @OneToMany(mappedBy = "author")
+    private List<Article> articles;
 
     public User() {
 
@@ -72,12 +78,28 @@ public class User implements UserDetails {
         this.password = password;
     }
 
+    public String getProfilePicture() {
+        return this.profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
     public Date getCreatedAt() {
         return this.createdAt;
     }
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<Article> getArticles() {
+        return this.articles;
+    }
+
+    public void setArticles(List<Article> articles) {
+        this.articles = articles;
     }
 
     @Override
