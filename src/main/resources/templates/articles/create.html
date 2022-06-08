@@ -14,92 +14,130 @@
             method="post"
             th:object="${createArticleForm}"
           >
+            <h1 class="h2">Artikel schreiben</h1>
             <div
-              style="color: green"
+              class="alert alert-success mt-3"
               th:if="${success != null}"
               th:text="${success}"
             ></div>
-            <br />
 
-            Titel: <input type="text" th:field="*{title}" placeholder="Titel" />
-            <div
-              style="color: red"
-              th:if="${#fields.hasErrors('title')}"
-              th:errors="*{title}"
-            ></div>
-            <br />
+            <div class="form-floating mt-3">
+              <input
+                id="title"
+                class="form-control"
+                th:classappend="${#fields.hasErrors('title')?'is-invalid':''}"
+                type="text"
+                th:field="*{title}"
+                placeholder="Titel"
+              />
+              <label for="title">Titel</label>
+              <div
+                class="invalid-feedback"
+                th:if="${#fields.hasErrors('title')}"
+                th:errors="*{title}"
+              ></div>
+            </div>
 
-            Banner:
+            <div class="mt-3">
+              <label for="banner" class="form-label">Bannerbild</label><br />
+              <img
+                class="img-fluid mb-1"
+                th:if="${createArticleForm.bannerLink != null}"
+                th:src="${createArticleForm.bannerLink}"
+              />
+
+              <input type="hidden" th:field="*{bannerLink}" />
+              <input
+                class="form-control"
+                type="file"
+                id="banner"
+                th:field="*{banner}"
+              />
+              <div
+                class="invalid-feedback"
+                th:if="${#fields.hasErrors('banner')}"
+                th:errors="*{banner}"
+              ></div>
+            </div>
+
+            <div class="form-floating mt-3">
+              <input
+                id="teaser"
+                class="form-control"
+                th:classappend="${#fields.hasErrors('teaser')?'is-invalid':''}"
+                type="text"
+                th:field="*{teaser}"
+                placeholder="Teaser"
+              />
+              <label for="teaser">Teaser</label>
+              <div
+                class="invalid-feedback"
+                th:if="${#fields.hasErrors('teaser')}"
+                th:errors="*{teaser}"
+              ></div>
+            </div>
+
+            <div class="form-floating mt-3">
+              <textarea
+                id="text"
+                class="form-control"
+                th:classappend="${#fields.hasErrors('text')?'is-invalid':''}"
+                type="text"
+                th:field="*{text}"
+                placeholder="Text"
+                style="height: 200px"
+              ></textarea>
+              <label for="text">Text</label>
+              <div
+                class="invalid-feedback"
+                th:if="${#fields.hasErrors('text')}"
+                th:errors="*{text}"
+              ></div>
+            </div>
+
+            <div class="form-floating mt-3">
+              <select
+                class="form-select"
+                th:classappend="${#fields.hasErrors('releaseType')?'is-invalid':''}"
+                id="releaseType"
+                th:field="*{releaseType}"
+              >
+                <option value="1" data-bs-toggle="publishDatePicker" selected>
+                  Jetzt
+                </option>
+                <option value="2" data-bs-toggle="publishDatePicker">
+                  Später
+                </option>
+              </select>
+              <label for="releaseType">Veröffentlichen</label>
+              <div
+                class="invalid-feedback"
+                th:if="${#fields.hasErrors('releaseType')}"
+                th:errors="*{releaseType}"
+              ></div>
+            </div>
+
+            <div class="form-floating mt-3 collapse" id="publishDatePicker">
+              <input
+                id="publishDate"
+                class="form-control"
+                th:classappend="${#fields.hasErrors('publishDate')?'is-invalid':''}"
+                type="datetime-local"
+                th:field="*{publishDate}"
+              />
+              <label for="publishDate">Veröffentlichungszeitpunkt</label>
+              <div
+                class="invalid-feedback"
+                th:if="${#fields.hasErrors('publishDate')}"
+                th:errors="*{publishDate}"
+              ></div>
+            </div>
+
             <input
-              type="hidden"
-              th:field="*{bannerLink}"
-              style="width: 200px; height: auto"
+              class="btn btn-primary mt-3"
+              type="submit"
+              value="Artikel veröffentlichen"
             />
-            <img
-              th:if="${createArticleForm.bannerLink != null}"
-              th:src="${createArticleForm.bannerLink}"
-              style="width: 200px; height: auto"
-            />
-            <input type="file" th:field="*{banner}" />
-            <div
-              style="color: red"
-              th:if="${#fields.hasErrors('banner')}"
-              th:errors="*{banner}"
-            ></div>
-            <br />
-
-            Teaser:
-            <input type="text" th:field="*{teaser}" placeholder="Teaser" />
-            <div
-              style="color: red"
-              th:if="${#fields.hasErrors('teaser')}"
-              th:errors="*{teaser}"
-            ></div>
-            <br />
-
-            Text: <textarea cols="30" rows="10" th:field="*{text}"></textarea>
-            <div
-              style="color: red"
-              th:if="${#fields.hasErrors('text')}"
-              th:errors="*{text}"
-            ></div>
-            <br />
-
-            Veröffentlichen:
-            <input
-              type="radio"
-              id="now"
-              name="releaseType"
-              value="1"
-              selected=""
-              th:field="*{releaseType}"
-            />
-            <label for="now">Direkt</label>
-            <input
-              type="radio"
-              id="later"
-              name="releaseType"
-              value="2"
-              th:field="*{releaseType}"
-            />
-            <label for="css">later</label>
-            <div
-              style="color: red"
-              th:if="${#fields.hasErrors('releaseType')}"
-              th:errors="*{releaseType}"
-            ></div>
-            <br />
-
-            Veröffentlichungszeitpunkt:
-            <input type="datetime-local" th:field="*{publishDate}" />
-            <div
-              style="color: red"
-              th:if="${#fields.hasErrors('publishDate')}"
-              th:errors="*{publishDate}"
-            ></div>
-            <br />
-
-            <input type="submit" value="Artikel veröffentlichen" />
           </form>
           <p></p>
         </div>
@@ -107,5 +145,25 @@
     </div>
 
     <head th:replace="layout :: footer"></head>
+
+    <script>
+      (function () {
+        var releaseType = document.querySelector("#releaseType");
+        const publishDatePicker = new bootstrap.Collapse("#publishDatePicker", {
+          toggle: releaseType.value == 2,
+        });
+
+        document
+          .querySelector("#releaseType")
+          .addEventListener("change", function () {
+            console.log(releaseType.value);
+            if (releaseType.value == 2) {
+              publishDatePicker.show();
+            } else {
+              publishDatePicker.hide();
+            }
+          });
+      })();
+    </script>
   </body>
 </html>
