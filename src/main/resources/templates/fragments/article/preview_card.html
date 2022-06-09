@@ -1,28 +1,24 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <body class="bg-light">
-    <div class="card m-2" th:fragment="article">
+    <div class="card m-2" th:fragment="article (article)">
       <img
-        src="https://picsum.photos/id/1/400/300"
+        th:if="${article.banner != ''}"
+        th:src="${article.banner}"
         class="card-img-top"
-        alt="..."
+        alt="Banner"
       />
       <div class="card-body">
-        <h5 class="card-title h5">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr
-        </h5>
-        <p class="card-text">
-          Sed diam nonumy eirmod tempor invidunt ut labore et dolore magna
-          aliquyam erat...
-        </p>
+        <h5 class="card-title h5" th:text="${article.title}"></h5>
+        <p class="card-text" th:if="${article.teaser != ''}" th:text="${article.teaser}"></p>
         <a
-          th:href="@{/article}"
+          th:href="@{/articles/}+${article.id}"
           class="btn btn-outline-secondary d-flex justify-content-center align-content-between mt-4"
           >Lesen</a
         >
       </div>
 
-      <div class="card-footer text-muted">2 days ago</div>
+      <div class="card-footer text-muted"><span th:text="${#dates.format(article.publishDate, 'dd.MM.yyyy HH:mm')}"></span></div>
     </div>
   </body>
 </html>
