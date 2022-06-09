@@ -16,7 +16,7 @@
           <h1 class="h2" th:text="${article.title}"></h1>
           <p th:text="${article.teaser}"></p>
 
-          <div class="row px-2 mb-3">
+          <div class="row px-2">
             <div class="col-md-1 g-1">
               <img
                 th:src="${article.author.profilePicture != null?article.author.profilePicture:'/static/noimg.png'}"
@@ -37,11 +37,10 @@
       </div>
     </div>
 
-    <div class="container mt-2" th:if="${article.banner != null}">
+    <div class="container mt-5" th:if="${article.banner != null}">
       <div class="row d-flex justify-content-center">
         <div class="col-8">
           <img th:src="${article.banner}" class="img-fluid w-100" />
-          <p></p>
         </div>
       </div>
     </div>
@@ -49,7 +48,7 @@
     <div class="container mt-2">
       <div class="row d-flex justify-content-center">
         <div class="col-6">
-          <p th:text="${article.text}"></p>
+          <p th:utext="${article.text}"></p>
         </div>
       </div>
     </div>

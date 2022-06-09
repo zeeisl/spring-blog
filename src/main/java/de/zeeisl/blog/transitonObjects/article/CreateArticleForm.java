@@ -1,16 +1,23 @@
 package de.zeeisl.blog.transitonObjects.article;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
+import org.jsoup.Jsoup;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import de.zeeisl.blog.entities.Article;
+import de.zeeisl.blog.entities.Tag;
+import de.zeeisl.blog.entities.User;
 
 public class CreateArticleForm {
 
@@ -39,19 +46,20 @@ public class CreateArticleForm {
 
     }
 
-    public Article toEntity(){
+    public Article toEntity(User author) {
         Article article = new Article();
-        article.setTitle(this.getTitle());
-        article.setBanner(this.getBannerLink());
-        article.setTeaser(this.getTeaser());
-        article.setText(this.getText());
+        article.setTitle(Jsoup.parse(this.getTitle()).text());
+        article.setBanner(Jsoup.parse(this.getBannerLink()).text());
+        article.setTeaser(Jsoup.parse(this.getTeaser()).text());
+        article.setText(Jsoup.parse(this.getText()).text());
         article.setCreateAt(new Date());
-        if(this.getReleaseType() == 2){
+        if (this.getReleaseType() == 2) {
             article.setPublishDate(this.getPublishDate());
-        }else{
+        } else {
             article.setPublishDate(article.getCreateAt());
         }
-
+        article.setAuthor(author);
+        
         return article;
     }
 

@@ -1,11 +1,19 @@
 package de.zeeisl.blog.controllers;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,7 +25,10 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.zeeisl.blog.entities.Article;
+import de.zeeisl.blog.entities.Tag;
+import de.zeeisl.blog.entities.User;
 import de.zeeisl.blog.repositories.ArticleRepository;
+import de.zeeisl.blog.repositories.TagRepository;
 import de.zeeisl.blog.services.StorageService;
 import de.zeeisl.blog.transitonObjects.article.CreateArticleForm;
 
@@ -29,6 +40,9 @@ public class ArticleController {
     ArticleRepository articleRepository;
 
     @Autowired
+    TagRepository tagRepository;
+
+    @Autowired
     StorageService storageService;
 
     @GetMapping("/{id}")
@@ -38,6 +52,11 @@ public class ArticleController {
         if (article == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artikel nicht gefunden.");
         }
+
+        Pattern tagPattern = Pattern.compile("(#\\w+)", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = tagPattern.matcher(article.getText());
+        String newText = matcher.replaceAll("<a class='btn btn-primary py-0 px-1 btn-sm'  href='#'>$0</a>");
+        article.setText(newText);
 
         model.addAttribute("article", article);
         return "articles/show";
@@ -67,10 +86,27 @@ public class ArticleController {
             return "articles/create";
         }
 
-        Article article = createArticleForm.toEntity();
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Article article = createArticleForm.toEntity(user);
         articleRepository.save(article);
+        createTagsFromText(article);
 
         redirectAttributes.addFlashAttribute("success", "Artikel erfolgreich gespeichert.");
         return String.format("redirect:/articles/%d", article.getId());
+    }
+
+    private void createTagsFromText(Article article){
+        Pattern tagPattern = Pattern.compile("#(\\w+)", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = tagPattern.matcher(article.getText());
+
+        List<Tag> tags = new ArrayList<Tag>();
+        while (matcher.find()) {
+            Tag t = new Tag();
+            t.setName(matcher.group(1));
+            tagRepository.save(t);
+
+            tags.add(t);
+        }
+        article.setTags(tags);
     }
 }
