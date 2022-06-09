@@ -29,6 +29,7 @@ import de.zeeisl.blog.entities.Tag;
 import de.zeeisl.blog.entities.User;
 import de.zeeisl.blog.repositories.ArticleRepository;
 import de.zeeisl.blog.repositories.TagRepository;
+import de.zeeisl.blog.services.ArticleSearchService;
 import de.zeeisl.blog.services.StorageService;
 import de.zeeisl.blog.transitonObjects.article.CreateArticleForm;
 
@@ -38,6 +39,9 @@ public class ArticleController {
 
     @Autowired
     ArticleRepository articleRepository;
+
+    @Autowired
+    ArticleSearchService articleSearchService;
 
     @Autowired
     TagRepository tagRepository;
@@ -90,6 +94,8 @@ public class ArticleController {
         Article article = createArticleForm.toEntity(user);
         articleRepository.save(article);
         createTagsFromText(article);
+
+        articleSearchService.create(article);
 
         redirectAttributes.addFlashAttribute("success", "Artikel erfolgreich gespeichert.");
         return String.format("redirect:/articles/%d", article.getId());
