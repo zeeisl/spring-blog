@@ -40,6 +40,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/static/**", "/uploads/**").permitAll()
                 .regexMatchers("/articles/\\d+").permitAll()
+                .regexMatchers("/users/\\d+").permitAll()
                 .antMatchers("/", "/home").permitAll()
                 .antMatchers("/register").permitAll()
                 .anyRequest().authenticated()

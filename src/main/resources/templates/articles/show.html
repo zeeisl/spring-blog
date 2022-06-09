@@ -21,16 +21,21 @@
               <img
                 th:src="${article.author.profilePicture != null?article.author.profilePicture:'/static/noimg.png'}"
                 class="img-fluid rounded"
-                alt="..."
               />
             </div>
-            <div class="col-md-11">
-              <div class="card-body">
-                <span class="card-title" th:text="${article.author.username}"></span>
-                <p class="card-text">
-                  <small class="text-muted">Veröffentlicht am <span th:text="${#dates.format(article.publishDate, 'dd.MM.yyyy')}"></span> </small>
-                </p>
-              </div>
+            <div class="col-md-11 ">
+              <a
+                class="align-middle"
+                th:href="@{/users/}+${article.author.id}"
+                th:text="${article.author.username}"
+              ></a
+              ><br />
+              <small class="text-muted align-middle"
+                >Veröffentlicht am
+                <span
+                  th:text="${#dates.format(article.publishDate, 'dd.MM.yyyy')}"
+                ></span>
+              </small>
             </div>
           </div>
         </div>
