@@ -129,4 +129,15 @@ public class User implements UserDetails {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                " id='" + getId() + "'" +
+                ", username='" + getUsername() + "'" +
+                ", email='" + getEmail() + "'" +
+                ", profilePicture='" + getProfilePicture() + "'" +
+                ", createdAt='" + getCreatedAt() + "'" +
+                "}";
+    }
+
 }

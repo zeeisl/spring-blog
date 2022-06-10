@@ -26,7 +26,7 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
     @Autowired
     ArticleRepository articleRepository;
 
-    private final String ES_URL = "http://127.0.0.1:9200";
+    public static final String ES_URL = "http://127.0.0.1:9200";
 
     @Override
     public void create(Article article) {
