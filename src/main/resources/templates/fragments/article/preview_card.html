@@ -10,15 +10,30 @@
       />
       <div class="card-body">
         <h5 class="card-title h5" th:text="${article.title}"></h5>
-        <p class="card-text" th:if="${article.teaser != ''}" th:text="${article.teaser}"></p>
-        <a
-          th:href="@{/articles/}+${article.id}"
-          class="btn btn-outline-secondary d-flex justify-content-center align-content-between mt-4"
-          >Lesen</a
-        >
+        <p
+          class="card-text"
+          th:if="${article.teaser != ''}"
+          th:text="${article.teaser}"
+        ></p>
+        <div class="d-flex justify-content-between mt-4 g-1">
+          <a
+            th:href="@{/articles/}+${article.id}"
+            class="btn btn-outline-secondary flex-fill mx-1"
+            >Lesen</a
+          ><a
+            th:href="@{/articles/}+${article.id}+'/edit'"
+            class="btn btn-primary flex-fill mx-1"
+            th:if="${type == 'timeline'} AND ${#authentication.getPrincipal() != 'anonymousUser'} AND ${#authentication.getPrincipal().getId() == article.author.id}"
+            >Bearbeiten</a
+          >
+        </div>
       </div>
 
-      <div class="card-footer text-muted"><span th:text="${#dates.format(article.publishDate, 'dd.MM.yyyy HH:mm')}"></span></div>
+      <div class="card-footer text-muted">
+        <span
+          th:text="${#dates.format(article.publishDate, 'dd.MM.yyyy HH:mm')}"
+        ></span>
+      </div>
     </div>
   </body>
 </html>

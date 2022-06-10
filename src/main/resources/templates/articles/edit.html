@@ -9,14 +9,14 @@
         <div class="col-6 mt-4">
           <form
             action="#"
-            th:action="@{/articles/}"
+            th:action="@{/articles/}+${editArticleForm.id}"
             enctype="multipart/form-data"
-            method="post"
-            th:object="${createArticleForm}"
+            th:method="post"
+            th:object="${editArticleForm}"
           >
-            <h1 class="h2 text-center">Artikel schreiben</h1>
+            <h1 class="h2 text-center">Artikel bearbeiten</h1>
             <div
-              class="alert alert-success mt-3"
+              class="alert alert-success"
               th:if="${success != null}"
               th:text="${success}"
             ></div>
@@ -42,8 +42,8 @@
               <label for="banner" class="form-label">Bannerbild</label><br />
               <img
                 class="img-fluid mb-1"
-                th:if="${createArticleForm.bannerLink != null}"
-                th:src="${createArticleForm.bannerLink}"
+                th:if="${editArticleForm.bannerLink != null}"
+                th:src="${editArticleForm.bannerLink}"
               />
 
               <input type="hidden" th:field="*{bannerLink}" />
@@ -95,35 +95,14 @@
               ></div>
             </div>
 
-            <div class="form-floating mt-3">
-              <select
-                class="form-select"
-                th:classappend="${#fields.hasErrors('releaseType')?'is-invalid':''}"
-                id="releaseType"
-                th:field="*{releaseType}"
-              >
-                <option value="1" data-bs-toggle="publishDatePicker" selected>
-                  Jetzt
-                </option>
-                <option value="2" data-bs-toggle="publishDatePicker">
-                  Später
-                </option>
-              </select>
-              <label for="releaseType">Veröffentlichen</label>
-              <div
-                class="invalid-feedback"
-                th:if="${#fields.hasErrors('releaseType')}"
-                th:errors="*{releaseType}"
-              ></div>
-            </div>
-
-            <div class="form-floating mt-3 collapse" id="publishDatePicker">
+            <div class="form-floating mt-3" id="publishDatePicker">
               <input
                 id="publishDate"
                 class="form-control"
                 th:classappend="${#fields.hasErrors('publishDate')?'is-invalid':''}"
                 type="datetime-local"
                 th:field="*{publishDate}"
+                disabled
               />
               <label for="publishDate">Veröffentlichungszeitpunkt</label>
               <div
@@ -136,7 +115,7 @@
             <input
               class="btn btn-primary mt-3"
               type="submit"
-              value="Artikel veröffentlichen"
+              value="Änderungen speichern"
             />
           </form>
           <p></p>
@@ -145,25 +124,5 @@
     </div>
 
     <head th:replace="layout :: footer"></head>
-
-    <script>
-      (function () {
-        var releaseType = document.querySelector("#releaseType");
-        const publishDatePicker = new bootstrap.Collapse("#publishDatePicker", {
-          toggle: releaseType.value == 2,
-        });
-
-        document
-          .querySelector("#releaseType")
-          .addEventListener("change", function () {
-            console.log(releaseType.value);
-            if (releaseType.value == 2) {
-              publishDatePicker.show();
-            } else {
-              publishDatePicker.hide();
-            }
-          });
-      })();
-    </script>
   </body>
 </html>

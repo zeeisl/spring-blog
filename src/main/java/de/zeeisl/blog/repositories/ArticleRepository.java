@@ -19,4 +19,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
     @Query("SELECT a FROM Article a WHERE a.publishDate <= ?1 ORDER BY publishDate DESC")
     List<Article> findAllPublishedArticles(Date now);
+
+    @Query("SELECT a FROM Article a WHERE a.id = ?1 and a.author IS ?2")
+    Article findArticleByIdAndAuthor(Long id, User user);
 }

@@ -12,9 +12,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
 import de.zeeisl.blog.entities.Article;
-import de.zeeisl.blog.entities.User;
 
-public class CreateArticleForm {
+public class EditArticleForm {
+
+    private Long id;
 
     @NotNull
     @Length(min = 5, max = 250, message = "Der Titel muss zwischen 5 und 250 Zeichen lang sein")
@@ -30,32 +31,38 @@ public class CreateArticleForm {
     @NotBlank(message = "Der Text darf nicht leer sein")
     private String text;
 
-    @NotNull
-    private int releaseType;
-
     @Future(message = "Veröffentlichungszeitpunkt muss in der Zukunft liegen")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
     private Date publishDate;
 
-    public CreateArticleForm() {
+    public EditArticleForm() {
 
     }
 
-    public Article toEntity(User author) {
-        Article article = new Article();
+    public void fromEntity(Article article) {
+        this.setId(article.getId());
+        this.setTitle(article.getTitle());
+        this.setBannerLink(article.getBanner());
+        this.setTeaser(article.getTeaser());
+        this.setText(article.getText());
+        this.setPublishDate(article.getPublishDate());
+    }
+
+    public Article updateEntity(Article article) {
         article.setTitle(Jsoup.parse(this.getTitle()).text());
         article.setBanner(Jsoup.parse(this.getBannerLink()).text());
         article.setTeaser(Jsoup.parse(this.getTeaser()).text());
         article.setText(Jsoup.parse(this.getText()).text());
-        article.setCreateAt(new Date());
-        if (this.getReleaseType() == 2) {
-            article.setPublishDate(this.getPublishDate());
-        } else {
-            article.setPublishDate(article.getCreateAt());
-        }
-        article.setAuthor(author);
 
         return article;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -90,14 +97,6 @@ public class CreateArticleForm {
         this.publishDate = publishDate;
     }
 
-    public int getReleaseType() {
-        return this.releaseType;
-    }
-
-    public void setReleaseType(int releaseType) {
-        this.releaseType = releaseType;
-    }
-
     public MultipartFile getBanner() {
         return this.banner;
     }
@@ -122,7 +121,6 @@ public class CreateArticleForm {
                 ", banner='" + getBanner() + "'" +
                 ", teaser='" + getTeaser() + "'" +
                 ", text='" + getText() + "'" +
-                ", releaseType='" + getReleaseType() + "'" +
                 ", publishDate='" + getPublishDate() + "'" +
                 "}";
     }

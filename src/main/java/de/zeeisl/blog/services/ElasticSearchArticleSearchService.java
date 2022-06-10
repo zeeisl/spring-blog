@@ -76,7 +76,7 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
                     "query": {
                         "query_string": {
                             "query": "%s",
-                            "fields": ["title", "teaser", "text"]
+                            "fields": ["title", "teaser", "text", "tags"]
                         }
                     },
                     "fields": ["id"],

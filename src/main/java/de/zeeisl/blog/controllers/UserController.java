@@ -39,6 +39,7 @@ public class UserController {
         
         User user = userMaybe.get();
         model.addAttribute("user", user);
+        model.addAttribute("type", "timeline");
 
         List<Article> articles = articleRepository.findPublishedArticleOfUser(user, new Date());
         model.addAttribute("articles", articles);
