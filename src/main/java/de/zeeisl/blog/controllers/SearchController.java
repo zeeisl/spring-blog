@@ -1,6 +1,5 @@
 package de.zeeisl.blog.controllers;
 
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
