@@ -30,12 +30,14 @@
           class="collapse navbar-collapse d-flex justify-content-between"
           id="navbarsExample07"
         >
-          <form class="form-inline mr-auto" method="get" action="/search">
+          <form class="form-inline mr-auto" method="get" th:action="@{/search}">
             <div class="input-group">
               <input
                 class="form-control"
                 name="q"
                 required=""
+                th:value="${query != ''?query:''}"
+                placeholder="Jetzt suchen..."
                 style="border-color: gray; width: 300px"
               />
               <button

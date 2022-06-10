@@ -39,8 +39,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/static/**", "/uploads/**").permitAll()
-                .regexMatchers("/articles/\\d+").permitAll()
-                .regexMatchers("/users/\\d+").permitAll()
+                .regexMatchers(HttpMethod.GET, "/articles/\\d+").permitAll()
+                .regexMatchers(HttpMethod.GET, "/users/\\d+").permitAll()
+                .antMatchers(HttpMethod.GET, "/search").permitAll()
                 .antMatchers("/", "/home").permitAll()
                 .antMatchers("/register").permitAll()
                 .anyRequest().authenticated()
