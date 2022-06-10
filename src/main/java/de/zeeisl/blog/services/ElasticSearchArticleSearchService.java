@@ -23,6 +23,9 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
     @Autowired
     RestTemplate restTemplate;
 
+    @Autowired
+    ArticleRepository articleRepository;
+
     private final String ES_URL = "http://127.0.0.1:9200";
 
     @Override
@@ -61,9 +64,6 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
         }
     }
 
-    @Autowired
-    ArticleRepository articleRepository;
-
     @Override
     public List<Article> find(String query) {
 
@@ -96,7 +96,6 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
         Date date = new Date();
         articles = articles.stream().filter(a -> a.getPublishDate().compareTo(date) <= 0).toList();
         
-
         return articles;
     }
 

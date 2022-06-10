@@ -57,13 +57,22 @@ public class ArticleController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artikel nicht gefunden.");
         }
 
-        Pattern tagPattern = Pattern.compile("(#\\w+)", Pattern.CASE_INSENSITIVE);
-        Matcher matcher = tagPattern.matcher(article.getText());
-        String newText = matcher.replaceAll("<a class='btn btn-primary py-0 px-1 btn-sm'  href='#'>$0</a>");
-        article.setText(newText);
-
+        String textWithTagLinks = replaceTagWithLinks(article.getText());
+        article.setText(textWithTagLinks);
         model.addAttribute("article", article);
+
+        String tags = String.join(", ", article.getTags().stream().map(t -> t.getName()).toList());
+
+        List<Article> similarArticles = articleSearchService.find(tags);
+        model.addAttribute("similarArticles", similarArticles);
+
         return "articles/show";
+    }
+
+    private String replaceTagWithLinks(String text){
+        Pattern tagPattern = Pattern.compile("(#\\w+)", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = tagPattern.matcher(text);
+        return matcher.replaceAll("<a class='btn btn-primary py-0 px-1 btn-sm'  href='#'>$0</a>");
     }
 
     @GetMapping("/create")

@@ -28,10 +28,11 @@ public class SearchController {
     String asdf(@RequestParam(name = "q", required = true) String query, Model model) {
         query = sanitizeString(query);
         
-        List<Article> articles = articleSearchService.find(query);
-        
         model.addAttribute("query", query);
+
+        List<Article> articles = articleSearchService.find(query);
         model.addAttribute("articles", articles);
+
         return "search/index";
     }
 
