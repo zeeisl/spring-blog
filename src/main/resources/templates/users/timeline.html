@@ -6,7 +6,12 @@
 
     <div class="container mt-2">
       <div class="row d-flex justify-content-center">
-        <h1 class="d-block h1 mt-4 text-center" th:text="${user.username}"></h1>
+        <img
+          th:src="${user.profilePicture != null?user.profilePicture:'/static/noimg.png'}"
+          class="rounded mx-auto d-block mt-2"
+          style="width: 200px; height: auto; border-radius: 10px;"
+        />
+        <h1 class="d-block h2 mt-2 text-center" th:text="${user.username}"></h1>
 
         <div class="col-6">
           <div class="row">
