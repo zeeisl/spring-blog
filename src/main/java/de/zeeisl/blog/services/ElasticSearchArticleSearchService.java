@@ -33,7 +33,7 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String url = ES_URL + "/articles/_doc";
+        String url = ES_URL + "/articles/_doc/" + article.getId();
         String body = """
                 {
                     "id": "%d",
@@ -58,10 +58,38 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
     }
 
     @Override
-    public void createBulk(List<Article> articles) {
-        for (Article a : articles) {
-            this.create(a);
+    public void putBulk(List<Article> articles){
+        for(Article a: articles){
+            update(a);
         }
+    }
+
+    @Override
+    public void update(Article article) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        String url = ES_URL + "/articles/_doc/" + article.getId();
+        String body = """
+                {
+                    "id": "%d",
+                    "author_id": "%d",
+                    "banner": "%s",
+                    "title": "%s",
+                    "teaser": "%s",
+                    "text": "%s",
+                    "create_at": "%s",
+                    "publish_date": "%s",
+                    "tags": "%s"
+                }
+                """.formatted(article.getId(), article.getAuthor().getId(), article.getBanner(), article.getTitle(),
+                article.getTeaser(),
+                article.getText(),
+                article.getCreateAt(), article.getPublishDate(),
+                String.join(", ", article.getTags().stream().map(t -> t.getName()).toList()));
+
+        HttpEntity<String> request = new HttpEntity<String>(body, headers);
+        restTemplate.put(url, request);
     }
 
     @Override
@@ -95,7 +123,7 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
         List<Article> articles = articleRepository.findAllById(articleIds);
         Date date = new Date();
         articles = articles.stream().filter(a -> a.getPublishDate().compareTo(date) <= 0).toList();
-        
+
         return articles;
     }
 

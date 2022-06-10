@@ -154,6 +154,7 @@ public class ArticleController {
 
         editArticleForm.updateEntity(article);
         articleRepository.save(article);
+        articleSearchService.update(article);
 
         model.addAttribute("success", "Artikel erfolgreich gespeichert.");
 
