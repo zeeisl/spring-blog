@@ -16,6 +16,7 @@
               <th scope="col">E-Mail</th>
               <th scope="col">Konto</th>
               <th scope="col">Rolle</th>
+              <th scope="col">Einloggen als</th>
               <th scope="col">Registriert am</th>
             </tr>
           </thead>
@@ -36,6 +37,9 @@
                   th:classappend="${user.userRole=='ADMIN'?'text-bg-dark':'text-bg-info text-white'}"
                     th:text="${user.userRole=='ADMIN'?'ADMIN':'Nutzer'}"></span
                   >
+                </td>
+                <td>
+                    <a type="button" class="btn btn-outline-danger btn-sm" th:href="@{/admin/loginAs/}+${user.id}">Einloggen</a>
                 </td>
                 <td th:text="${#dates.format(user.createdAt, 'HH:mm dd.MM.yyyy')}"></td>
               </tr>
