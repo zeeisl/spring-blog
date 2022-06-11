@@ -60,7 +60,7 @@ public class StartupConfig {
 
         // tags
         List<Tag> tags = new ArrayList<Tag>();
-        for(int i=0; i<20; i++){
+        for (int i = 0; i < 20; i++) {
             Tag tag = new Tag();
             tag.setName(faker.lorem().word());
             tagRepository.save(tag);
@@ -72,8 +72,10 @@ public class StartupConfig {
             user.setUsername(faker.name().fullName());
             user.setEmail(faker.name().firstName() + "@example.de");
             user.setPassword(passwordEncoder.encode("password"));
-            user.setCreatedAt(new Date());
             user.setProfilePicture("https://picsum.photos/id/" + faker.number().numberBetween(1, 100) + "/200");
+            user.setUserRole(i == 0 ? "ADMIN" : "USER");
+            user.setEnabled(true);
+            user.setCreatedAt(new Date());
             userRepository.save(user);
 
             for (int j = 0; j < 10; j++) {
@@ -86,15 +88,15 @@ public class StartupConfig {
                 article.setPublishDate(article.getCreateAt());
 
                 // add random subset of tags
-                if(faker.bool().bool()){
+                if (faker.bool().bool()) {
                     int tagCount = faker.number().numberBetween(1, 5);
                     Collections.shuffle(tags);
 
                     List<Tag> articleTags = new ArrayList<Tag>(tags.subList(0, tagCount));
                     article.setTags(articleTags);
 
-                    String tagStr = String.join(" ", articleTags.stream().map(t -> "#"+t.getName()).toList());
-                    article.setText(article.getText()+"<br />"+tagStr);
+                    String tagStr = String.join(" ", articleTags.stream().map(t -> "#" + t.getName()).toList());
+                    article.setText(article.getText() + "<br />" + tagStr);
                 }
 
                 article.setAuthor(user);

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="admin-layout :: head"></head>
+  <body>
+    <main class="d-flex flex-nowrap">
+      <div th:replace="admin-layout :: header"></div>
+
+      <div class="container">
+        <h1 class="h1">Benutzer</h1>
+
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Name</th>
+              <th scope="col">E-Mail</th>
+              <th scope="col">Konto</th>
+              <th scope="col">Rolle</th>
+              <th scope="col">Registriert am</th>
+            </tr>
+          </thead>
+          <tbody>
+            <th:block th:each="user : ${users}">
+              <tr>
+                <th scope="row" th:text="${user.id}"></th>
+                <td th:text="${user.username}"></td>
+                <td th:text="${user.email}"></td>
+                <td>
+                  <span class="badge rounded-pill"
+                  th:classappend="${user.enabled?'text-bg-success':'text-bg-danger'}"
+                    th:text="${user.enabled?'Aktiv':'Deaktiviert'}"></span
+                  >
+                </td>
+                <td>
+                  <span class="badge rounded-pill"
+                  th:classappend="${user.userRole=='ADMIN'?'text-bg-dark':'text-bg-info text-white'}"
+                    th:text="${user.userRole=='ADMIN'?'ADMIN':'Nutzer'}"></span
+                  >
+                </td>
+                <td th:text="${#dates.format(user.createdAt, 'HH:mm dd.MM.yyyy')}"></td>
+              </tr>
+            </th:block>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <div th:replace="admin-layout :: footer"></div>
+  </body>
+</html>

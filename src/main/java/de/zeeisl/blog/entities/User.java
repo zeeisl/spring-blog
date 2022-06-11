@@ -36,6 +36,11 @@ public class User implements UserDetails {
 
     private String profilePicture;
 
+    @NotBlank
+    private String userRole;
+
+    private boolean enabled;
+
     @NotNull
     private Date createdAt;
 
@@ -79,11 +84,27 @@ public class User implements UserDetails {
     }
 
     public String getProfilePicture() {
-        return this.profilePicture;
+        if (this.profilePicture != null && !this.profilePicture.isEmpty()) {
+            return this.profilePicture;
+        } else {
+            return "/static/noimg.png";
+        }
     }
 
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
+    }
+
+    public String getUserRole() {
+        return this.userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Date getCreatedAt() {
@@ -105,7 +126,7 @@ public class User implements UserDetails {
     @Override
     public Set<GrantedAuthority> getAuthorities() {
         Set<GrantedAuthority> authorities = new HashSet<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("USER"));
+        authorities.add(new SimpleGrantedAuthority(this.userRole));
         return authorities;
     }
 
@@ -126,7 +147,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.enabled;
     }
 
     @Override
@@ -135,7 +156,10 @@ public class User implements UserDetails {
                 " id='" + getId() + "'" +
                 ", username='" + getUsername() + "'" +
                 ", email='" + getEmail() + "'" +
+                ", password='" + getPassword() + "'" +
                 ", profilePicture='" + getProfilePicture() + "'" +
+                ", userRole='" + getUserRole() + "'" +
+                ", enabled='" + isEnabled() + "'" +
                 ", createdAt='" + getCreatedAt() + "'" +
                 "}";
     }

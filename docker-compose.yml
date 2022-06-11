@@ -7,7 +7,7 @@ services:
       - MARIADB_ROOT_PASSWORD=password
       - MARIADB_DATABASE=blog
     volumes:
-      - ./data:/var/lib/mysql
+      - ./data/mariadb:/var/lib/mysql
     ports:
       - 3808:3808
       - 3306:3306
@@ -15,6 +15,8 @@ services:
     image: phpmyadmin
     ports:
       - 8081:80
+    depends_on:
+      - database
     environment:
       - PMA_ARBITRARY=1
       - PMA_HOST=database
@@ -24,12 +26,16 @@ services:
     container_name: elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:7.11.0
     environment:
-      # - xpack.security.enabled=false
-      - "discovery.type=single-node"
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
     ports:
       - 9200:9200
     volumes:
-      - ./esdata:/usr/share/elasticsearch/data
+      - ./data/elasticsearch:/usr/share/elasticsearch/data
   kibana:
     container_name: kibana
     image: docker.elastic.co/kibana/kibana:7.11.0

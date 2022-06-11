@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:fragment="head">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>blog admin-panel</title>
+    <link href="/static/bootstrap.min.css" rel="stylesheet" />
+
+    <style>
+      body {
+        min-height: 100vh;
+        min-height: -webkit-fill-available;
+      }
+
+      html {
+        height: -webkit-fill-available;
+      }
+
+      main {
+        height: 100vh;
+        height: -webkit-fill-available;
+        max-height: 100vh;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+
+      .dropdown-toggle {
+        outline: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      th:fragment="header"
+      class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark"
+      style="width: 280px"
+    >
+      <a
+        th:href="@{/admin/home}"
+        class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none"
+      >
+        <span class="fs-4">admin-panel</span>
+      </a>
+      <hr />
+      <ul class="nav nav-pills flex-column mb-auto">
+        <li>
+          <a
+            th:href="@{/admin/home}"
+            class="nav-link text-white"
+            aria-current="page"
+          >
+            Home
+          </a>
+        </li>
+        <li>
+          <a th:href="@{/admin/users}" class="nav-link text-white"> Benutzer </a>
+        </li>
+        <!-- <li>
+          <a href="#" class="nav-link text-white"> Artikel </a>
+        </li> -->
+      </ul>
+      <hr />
+      <div class="dropdown">
+        <a
+          href="#"
+          class="d-flex align-items-center text-white text-decoration-none dropdown-toggle"
+          id="dropdownUser1"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          <img
+            th:src="${#authentication.getPrincipal().getProfilePicture()}"
+            alt=""
+            width="32"
+            height="32"
+            class="rounded me-2"
+          />
+          <strong th:text="${#authentication.getPrincipal().getUsername()}"
+            >NAME</strong
+          >
+        </a>
+        <ul
+          class="dropdown-menu dropdown-menu-dark text-small shadow"
+          aria-labelledby="dropdownUser1"
+        >
+          <!-- <li><a class="dropdown-item" href="#">New project...</a></li>
+            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <li><a class="dropdown-item" href="#">Profile</a></li>
+          <li><hr class="dropdown-divider" /></li> -->
+          <form th:action="@{/logout}" method="post">
+            <li>
+              <input
+                class="dropdown-item"
+                th:href="@{/logout}"
+                type="submit"
+                value="Logout"
+              />
+            </li>
+          </form>
+        </ul>
+      </div>
+    </div>
+
+    <div th:fragment="footer">
+      <script src="/static/bootstrap.bundle.min.js"></script>
+    </div>
+  </body>
+</html>
