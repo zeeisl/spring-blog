@@ -118,7 +118,7 @@ public class AuthController {
 
                 Schöne Grüße
 
-                blog-team
+                Dein blog-team
                 """.formatted(user.getUsername(), user.getPasswordResetHash());
         mail.setText(message);
 

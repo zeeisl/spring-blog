@@ -49,6 +49,9 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "author")
     private List<Article> articles;
 
+    @OneToMany(mappedBy = "user")
+    private List<SocialmediaLinks> socialmediaLinks;
+
     public User() {
 
     }
@@ -135,6 +138,14 @@ public class User implements UserDetails {
 
     public void setArticles(List<Article> articles) {
         this.articles = articles;
+    }
+
+    public List<SocialmediaLinks> getSocialmediaLinks() {
+        return this.socialmediaLinks;
+    }
+
+    public void setSocialmediaLinks(List<SocialmediaLinks> socialmediaLinks) {
+        this.socialmediaLinks = socialmediaLinks;
     }
 
     @Override

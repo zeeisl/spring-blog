@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="layout :: head"></head>
+  <body class="bg-light">
+    <head th:replace="layout :: header"></head>
+
+    <div class="container mt-2">
+      <div class="row d-flex justify-content-center">
+        <div class="col-6 mt-4">
+          <h1 class="h2 text-center">Social Media Links</h1>
+          <div
+            class="alert alert-success mt-3"
+            th:if="${success != null}"
+            th:text="${success}"
+          ></div>
+          <form
+            th:action="@{/users/socialmedia}"
+            enctype="multipart/form-data"
+            method="post"
+          >
+            <div class="input-group mt-3">
+              <input type="text" class="form-control" name="link" placeholder="Link..." />
+
+              <select class="form-select" name="type" >
+                <option selected>Seite wählen ...</option>
+                <option value="facebook">Facebook</option>
+                <option value="instagram">Instagram</option>
+                <option value="twitter">Twitter</option>
+                <option value="linkedin">LinkedIn</option>
+              </select>
+
+              <input class="btn btn-primary" type="submit" value="Speichern" />
+            </div>
+          </form>
+          <table class="table table-striped mt-3">
+            <thead>
+              <tr>
+                <th scope="col">Type</th>
+                <th scope="col">Link</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="link : ${links}">
+                <td th:text="${link.type}"></td>
+                <td th:text="${link.link}"></td>
+                <td><a type="button" class="btn btn-outline-danger btn-sm" th:href="@{/users/socialmedia/{id}/delete(id=${link.id})}">Löschen</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <head th:replace="layout :: footer"></head>
+  </body>
+</html>
