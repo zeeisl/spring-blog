@@ -9,11 +9,19 @@
         <img
           th:src="${user.profilePicture != null?user.profilePicture:'/static/noimg.png'}"
           class="rounded mx-auto d-block mt-2"
-          style="width: 200px; height: auto; border-radius: 10px;"
+          style="width: 200px; height: auto; border-radius: 10px"
         />
         <h1 class="d-block h2 mt-2 text-center" th:text="${user.username}"></h1>
 
-        <div class="col-6">
+        <div class="mt-2 d-flex justify-content-center" th:if="${#lists.size(user.socialmediaLinks) > 0}">
+          <th:block th:each="link : ${user.socialmediaLinks}">
+            <a th:href="${link.link}" class="text-decoration-none mx-2">
+              <i class="bi" th:classappend="${'bi-'+link.type}" style="font-size: 2rem; color: gray"></i>
+            </a>
+          </th:block>
+        </div>
+
+        <div class="col-6 mt-3">
           <div class="row">
             <th:block th:each="article : ${articles}">
               <div class="p-0 col-12">
