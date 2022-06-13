@@ -2,6 +2,8 @@ package de.zeeisl.blog.controllers;
 
 import java.util.Date;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.RandomStringUtils;
@@ -73,18 +75,26 @@ public class AuthController {
     }
 
     @GetMapping("/auth/resetpassword")
-    String forgotPasswordFormPage() {
+    String forgotPasswordFormPage(@RequestParam(required = false, name = "title", defaultValue = "Passwort Vergessen") String title, Model model) {
+        model.addAttribute("title", title);
         return "auth/forgotpassword";
     }
 
     @PostMapping("/auth/resetpassword")
-    String forgotPasswordPage(@RequestParam(name = "email", required = true) String email, Model model) {
+    String forgotPasswordPage(@RequestParam(name = "email", required = true) String email, Model model, HttpServletRequest request) {
         User user = userRepository.findByEmail(email);
 
         if (user != null) {
             String passwordResetToken = RandomStringUtils.randomAlphanumeric(32);
             user.setPasswordResetHash(passwordResetToken);
+            user.setEnabled(false);
             userRepository.save(user);
+
+            try {
+                request.logout();
+            } catch (ServletException e) {
+
+            }
 
             sendPasswordResetEmail(user);
         }
@@ -139,6 +149,7 @@ public class AuthController {
 
         user.setPasswordResetHash(null);
         user.setPassword(passwordEncoder.encode(password1));
+        user.setEnabled(true);
         userRepository.save(user);
 
         model.addAttribute("success", "Neues Passwort erfolgreich gespeichert. Du kannst Dich jetzt einloggen.");

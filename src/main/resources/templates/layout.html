@@ -78,8 +78,16 @@
                   >
                 </li>
                 <li>
+                  <hr class="dropdown-divider" />
+                </li>
+                <li>
                   <a class="dropdown-item" th:href="@{/users/{id}/edit(id=${#authentication.getPrincipal().getId()})}"
                     >Benutzerdaten bearbeiten</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" th:href="@{/auth/resetpassword(title='Neues Passwort setzen')}"
+                    >Passwort ändern</a
                   >
                 </li>
                 <th:block
