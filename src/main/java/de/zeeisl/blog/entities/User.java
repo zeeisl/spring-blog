@@ -34,6 +34,8 @@ public class User implements UserDetails {
     @NotBlank
     private String password;
 
+    private String passwordResetHash;
+
     private String profilePicture;
 
     @NotBlank
@@ -81,6 +83,18 @@ public class User implements UserDetails {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getPasswordResetHash() {
+        return this.passwordResetHash;
+    }
+
+    public void setPasswordResetHash(String passwordResetHash) {
+        this.passwordResetHash = passwordResetHash;
+    }
+
+    public boolean getEnabled() {
+        return this.enabled;
     }
 
     public String getProfilePicture() {

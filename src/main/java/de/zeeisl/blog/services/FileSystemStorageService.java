@@ -14,6 +14,18 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class FileSystemStorageService implements StorageService {
 
+    public FileSystemStorageService() {
+        this.init();
+    }
+
+    public void init() {
+        try {
+            Files.createDirectories(rootLocation);
+        } catch (IOException e) {
+            throw new StorageException("Could not initialize storage", e);
+        }
+    }
+
     private final Path rootLocation = Paths.get("uploads");
 
     @Override
@@ -50,14 +62,5 @@ public class FileSystemStorageService implements StorageService {
             throw new StorageException("Failed to read stored files", e);
         }
 
-    }
-
-    @Override
-    public void init() {
-        try {
-            Files.createDirectories(rootLocation);
-        } catch (IOException e) {
-            throw new StorageException("Could not initialize storage", e);
-        }
     }
 }

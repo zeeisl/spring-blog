@@ -4,13 +4,20 @@ import java.util.Date;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import de.zeeisl.blog.entities.User;
 import de.zeeisl.blog.repositories.UserRepository;
@@ -25,8 +32,15 @@ public class AuthController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+    @Autowired
+    JavaMailSender javaMailSender;
+
     @GetMapping("/login")
-    String login() {
+    String login(Model model) {
+        if(SecurityContextHolder.getContext().getAuthentication().isAuthenticated() && !(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String)){
+            User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            return "redirect:/users/%d".formatted(authUser.getId());
+        }
         return "auth/login";
     }
 
@@ -58,4 +72,77 @@ public class AuthController {
         return "auth/register";
     }
 
+    @GetMapping("/auth/resetpassword")
+    String forgotPasswordFormPage() {
+        return "auth/forgotpassword";
+    }
+
+    @PostMapping("/auth/resetpassword")
+    String forgotPasswordPage(@RequestParam(name = "email", required = true) String email, Model model) {
+        User user = userRepository.findByEmail(email);
+
+        if (user != null) {
+            String passwordResetToken = RandomStringUtils.randomAlphanumeric(32);
+            user.setPasswordResetHash(passwordResetToken);
+            userRepository.save(user);
+
+            sendPasswordResetEmail(user);
+        }
+
+        model.addAttribute("success", "Eine E-Mail mit dem weiteren Vorgehen wurde an dich gesendet.");
+
+        return "auth/forgotpassword";
+    }
+
+    public void sendPasswordResetEmail(User user) {
+        SimpleMailMessage mail = new SimpleMailMessage();
+        mail.setFrom("noreply@zeeshan-islam.de");
+        mail.setTo(user.getEmail());
+        mail.setSubject("blog: Passwort neu setzen");
+
+        String message = """
+                Hallo %s,
+
+                besuche den folgenden Link um dein Passwort neu zu setzen:
+                http://127.0.0.1:8080/auth/resetpassword/%s
+
+                Schöne Grüße
+
+                blog-team
+                """.formatted(user.getUsername(), user.getPasswordResetHash());
+        mail.setText(message);
+
+        javaMailSender.send(mail);
+    }
+
+    @GetMapping("/auth/resetpassword/{token}")
+    String resetPasswordPage(@PathVariable(required = true, name = "token") String token, Model model) {
+        model.addAttribute("token", token);
+        return "auth/resetpassword";
+    }
+
+    @PostMapping("/auth/resetpassword/{token}")
+    String resetPasswordPage(@PathVariable(name = "token", required = true) String token,
+            @RequestParam(required = true, name = "password1") String password1,
+            @RequestParam(required = true, name = "password2") String password2, Model model) {
+        
+        if (!password1.equals(password2)) {
+            model.addAttribute("error", "Passwörter stimmen nicht überein.");
+            return "auth/resetpassword";
+        }
+
+        User user = userRepository.findByPasswordResetHash(token);
+        if(user == null){
+            model.addAttribute("error", "Ein Fehler ist aufgetreten.");
+            return "auth/resetpassword";
+        }
+
+        user.setPasswordResetHash(null);
+        user.setPassword(passwordEncoder.encode(password1));
+        userRepository.save(user);
+
+        model.addAttribute("success", "Neues Passwort erfolgreich gespeichert. Du kannst Dich jetzt einloggen.");
+
+        return "auth/resetpassword";
+    }
 }
