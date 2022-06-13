@@ -77,20 +77,25 @@
                     >Artikel schreiben</a
                   >
                 </li>
-                <li
-                  th:if="${#authentication.getPrincipal() != 'anonymousUser'} AND ${#authentication.getPrincipal().getUserRole() == 'ADMIN'}"
-                >
-                  <hr class="dropdown-divider" />
-                </li>
-                <li
-                  th:if="${#authentication.getPrincipal() != 'anonymousUser'} AND ${#authentication.getPrincipal().getUserRole() == 'ADMIN'}"
-                >
-                  <a
-                    class="dropdown-item bg-dark text-white"
-                    th:href="@{/admin/home}"
-                    >AdminPanel</a
+                <li>
+                  <a class="dropdown-item" th:href="@{/users/{id}/edit(id=${#authentication.getPrincipal().getId()})}"
+                    >Benutzerdaten bearbeiten</a
                   >
                 </li>
+                <th:block
+                  th:if="${#authentication.getPrincipal() != 'anonymousUser'} AND ${#authentication.getPrincipal().getUserRole() == 'ADMIN'}"
+                >
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item bg-dark text-white"
+                      th:href="@{/admin/home}"
+                      >AdminPanel</a
+                    >
+                  </li>
+                </th:block>
                 <li><hr class="dropdown-divider" /></li>
                 <form th:action="@{/logout}" method="post">
                   <li>
