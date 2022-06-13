@@ -85,7 +85,7 @@
                 type="text"
                 th:field="*{text}"
                 placeholder="Text"
-                style="height: 200px"
+                style="min-height: 200px; height: auto"
               ></textarea>
               <label for="text">Text</label>
               <div
@@ -148,6 +148,19 @@
 
     <script>
       (function () {
+        var editor = new MediumEditor("#text", {
+          toolbar: {
+            buttons: [
+              "bold",
+              "italic",
+              "underline",
+              "anchor",
+              "h2",
+              "h3",
+            ],
+          },
+        });
+
         var releaseType = document.querySelector("#releaseType");
         const publishDatePicker = new bootstrap.Collapse("#publishDatePicker", {
           toggle: releaseType.value == 2,

@@ -93,13 +93,15 @@ public class ArticleController {
             createArticleForm.setBannerLink(path);
         }
 
+        System.out.println(createArticleForm.getText());
+
         if (bindingResult.hasErrors()) {
             return "articles/create";
         }
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Article article = createArticleForm.toEntity(user);
-        articleRepository.save(article);
+        //articleRepository.save(article);
         createTagsFromText(article);
         articleRepository.save(article);
 
