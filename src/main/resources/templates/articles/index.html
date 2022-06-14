@@ -8,8 +8,7 @@
       <h1>
         <span class="d-block h3 mt-4 text-uppercase">Die neusten Artikel</span>
       </h1>
-      <!-- data-masonry='{"percentPosition": true }' -->
-      <div class="row" >
+      <div id="grid" class="row" data-masonry='{"percentPosition": true }'>
         <th:block th:each="article : ${articles}">
           <div class="p-0 col-12 col-md-6 col-lg-4">
             <div
@@ -21,5 +20,21 @@
     </div>
 
     <head th:replace="layout :: footer"></head>
+
+    <script>
+      Promise.all(
+        Array.from(document.images)
+          .filter((img) => !img.complete)
+          .map(
+            (img) =>
+              new Promise((resolve) => {
+                img.onload = img.onerror = resolve;
+              })
+          )
+      ).then(() => {
+        var msnry = new Masonry("#grid");
+        msnry.layout();
+      });
+    </script>
   </body>
 </html>

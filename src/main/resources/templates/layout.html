@@ -16,7 +16,12 @@
       aria-label="Eighth navbar example"
     >
       <div class="container">
-        <a class="navbar-brand" href="/"><i class="bi bi-file-richtext"></i> blog</a>
+        <a
+          class="navbar-brand btn btn-primary text-white px-2"
+          style="padding: 3px"
+          href="/"
+          ><i class="bi bi-exclude mx-1"></i> blog</a
+        >
         <button
           class="navbar-toggler"
           type="button"
@@ -48,7 +53,7 @@
                 class="btn btn-primary"
                 style="background-color: gray; border-color: gray"
               >
-                Suchen
+                <i class="bi bi-search"></i>
               </button>
             </div>
           </form>
@@ -84,7 +89,9 @@
                   <hr class="dropdown-divider" />
                 </li>
                 <li>
-                  <a class="dropdown-item" th:href="@{/users/{id}/edit(id=${#authentication.getPrincipal().getId()})}"
+                  <a
+                    class="dropdown-item"
+                    th:href="@{/users/{id}/edit(id=${#authentication.getPrincipal().getId()})}"
                     >Benutzerdaten bearbeiten</a
                   >
                 </li>
@@ -94,7 +101,9 @@
                   >
                 </li>
                 <li>
-                  <a class="dropdown-item" th:href="@{/auth/resetpassword(title='Neues Passwort setzen')}"
+                  <a
+                    class="dropdown-item"
+                    th:href="@{/auth/resetpassword(title='Neues Passwort setzen')}"
                     >Passwort ändern</a
                   >
                 </li>
@@ -141,7 +150,14 @@
       <footer class="container pt-4 mt-md-5 py-md-5">
         <div class="row">
           <div class="col-12 col-md">
-            <h1>blog</h1>
+            <h1>
+              <a
+                class="navbar-brand btn btn-primary text-white px-2"
+                style="padding: 3px"
+                href="/"
+                ><i class="bi bi-exclude mx-1"></i> blog</a
+              >
+            </h1>
             <small class="d-block mb-3 text-muted">&copy; 2017–2022</small>
           </div>
           <div class="col-6 col-md">

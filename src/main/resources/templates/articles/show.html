@@ -72,7 +72,7 @@
       <div class="col-8 mt-5">
         <h2 class="h3 text-center">Ähnliche Artikel</h2>
         <!--  data-masonry='{"percentPosition": true }' -->
-        <div class="row">
+        <div id="grid" class="row">
           <th:block th:each="article : ${similarArticles}">
             <div class="p-0 col-12 col-md-6 col-lg-4">
               <div
@@ -82,6 +82,22 @@
           </th:block>
         </div>
       </div>
+
+      <script>
+        Promise.all(
+          Array.from(document.images)
+            .filter((img) => !img.complete)
+            .map(
+              (img) =>
+                new Promise((resolve) => {
+                  img.onload = img.onerror = resolve;
+                })
+            )
+        ).then(() => {
+          var msnry = new Masonry("#grid");
+          msnry.layout();
+        });
+      </script>
     </div>
 
     <head th:replace="layout :: footer"></head>

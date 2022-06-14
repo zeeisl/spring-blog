@@ -45,7 +45,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .regexMatchers(HttpMethod.GET, "/users/\\d+").permitAll()
                 .antMatchers(HttpMethod.GET, "/search").permitAll()
                 .antMatchers("/", "/home").permitAll()
-                .antMatchers("/register", "/auth/resetpassword/**").permitAll()
+                .antMatchers("/register", "/auth/resetpassword/**", "/pages/*").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
