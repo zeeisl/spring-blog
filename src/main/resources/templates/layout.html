@@ -35,10 +35,10 @@
         </button>
 
         <div
-          class="collapse navbar-collapse d-flex justify-content-between"
+          class="collapse navbar-collapse"
           id="navbarsExample07"
         >
-          <form class="form-inline mr-auto" method="get" th:action="@{/search}">
+          <form class="form-inline mt-2 mt-md-0 me-auto" method="get" th:action="@{/search}">
             <div class="input-group">
               <input
                 class="form-control"
@@ -46,19 +46,18 @@
                 required=""
                 th:value="${query != ''?query:''}"
                 placeholder="Jetzt suchen..."
-                style="border-color: gray; width: 300px"
+                style="border-color: #0d6efd; width: 250px"
               />
               <button
                 type="submit"
                 class="btn btn-primary"
-                style="background-color: gray; border-color: gray"
               >
                 <i class="bi bi-search"></i>
               </button>
             </div>
           </form>
 
-          <ul class="navbar-nav">
+          <ul class="navbar-nav  mt-md-0">
             <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
               <a
                 class="nav-link dropdown-toggle"
@@ -158,7 +157,7 @@
                 ><i class="bi bi-exclude mx-1"></i> blog</a
               >
             </h1>
-            <small class="d-block mb-3 text-muted">&copy; 2017–2022</small>
+            <small class="d-block mb-3 text-muted">Von Zeeshan Islam</small>
           </div>
           <div class="col-6 col-md">
             <h5>Features</h5>

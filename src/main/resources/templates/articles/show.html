@@ -6,7 +6,7 @@
 
     <div class="container mt-3">
       <div class="row d-flex justify-content-center">
-        <div class="col-6">
+        <div class="col-md-6">
           <div
             class="alert alert-success"
             th:if="${success != null}"
@@ -17,13 +17,13 @@
           <p th:text="${article.teaser}"></p>
 
           <div class="row px-2">
-            <div class="col-md-1 g-1">
+            <div class="col-2 col-lg-1 g-1">
               <img
                 th:src="${article.author.profilePicture != null?article.author.profilePicture:'/static/noimg.png'}"
                 class="img-fluid rounded"
               />
             </div>
-            <div class="col-md-11">
+            <div class="col-10 col-lg-11">
               <a
                 class="align-middle"
                 th:href="@{/users/}+${article.author.id}"
@@ -51,7 +51,7 @@
 
     <div class="container mt-3" th:if="${article.banner != ''}">
       <div class="row d-flex justify-content-center">
-        <div class="col-8">
+        <div class="col-md-8">
           <img th:src="${article.banner}" class="img-fluid w-100" />
         </div>
       </div>
@@ -59,7 +59,7 @@
 
     <div class="container mt-3">
       <div class="row d-flex justify-content-center">
-        <div class="col-6">
+        <div class="col-md-6">
           <p th:utext="${article.text}"></p>
         </div>
       </div>
@@ -69,7 +69,7 @@
       class="row d-flex justify-content-center"
       th:if="${#lists.size(similarArticles) > 0}"
     >
-      <div class="col-8 mt-5">
+      <div class="col-10 col-md-8 mt-5">
         <h2 class="h3 text-center">Ähnliche Artikel</h2>
         <!--  data-masonry='{"percentPosition": true }' -->
         <div id="grid" class="row">
