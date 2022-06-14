@@ -12,6 +12,8 @@ import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 import javax.validation.constraints.NotBlank;
 
+import org.jsoup.Jsoup;
+
 @Entity
 @Table(name = "advertisements")
 public class Advertisement {
@@ -68,7 +70,7 @@ public class Advertisement {
     }
 
     public void setLink(String link) {
-        this.link = link;
+        this.link = Jsoup.parse(link).text();
     }
 
     public String getStatus() {

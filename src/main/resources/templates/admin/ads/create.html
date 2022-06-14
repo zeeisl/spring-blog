@@ -5,7 +5,74 @@
     <head th:replace="admin-layout :: header"></head>
 
     <div class="container mt-3">
-        <h1 class="h1">Werbung erstellen</h1>
+      <h1 class="h1">Werbung erstellen</h1>
+
+      <form
+        action="#"
+        th:action="@{/admin/ads/create}"
+        enctype="multipart/form-data"
+        method="post"
+        th:object="${createAdvertisementForm}"
+      >
+        <div class="mt-3">
+          <label for="imageFile" class="form-label">Bild</label><br />
+          <img
+            class="img-fluid mb-1"
+            th:if="${createAdvertisementForm.image != ''}"
+            th:src="${createAdvertisementForm.image}"
+          />
+
+          <input type="hidden" th:field="*{image}" />
+          <input
+            class="form-control"
+            type="file"
+            id="imageFile"
+            th:field="*{imageFile}"
+            th:classappend="${#fields.hasErrors('image')?'is-invalid':''}"
+          />
+          <div
+            class="invalid-feedback"
+            th:if="${#fields.hasErrors('image')}"
+            th:errors="*{image}"
+          ></div>
+        </div>
+        <div class="mt-3">
+          <label for="link">Link</label>
+          <input
+            type="text"
+            id="link"
+            class="form-control"
+            th:field="*{link}"
+            th:classappend="${#fields.hasErrors('link')?'is-invalid':''}"
+          />
+          <div
+            class="invalid-feedback"
+            th:if="${#fields.hasErrors('link')}"
+            th:errors="*{link}"
+          ></div>
+        </div>
+        <div class="mt-3">
+          <label for="tags">Tags</label>
+          <input
+            type="text"
+            id="tags"
+            class="form-control"
+            th:field="*{tags}"
+            th:classappend="${#fields.hasErrors('tags')?'is-invalid':''}"
+          />
+          <div
+            class="invalid-feedback"
+            th:if="${#fields.hasErrors('tags')}"
+            th:errors="*{tags}"
+          ></div>
+        </div>
+
+        <input
+          type="submit"
+          value="Werbung erstellen"
+          class="btn btn-primary mt-3"
+        />
+      </form>
     </div>
 
     <div th:replace="admin-layout :: footer"></div>
