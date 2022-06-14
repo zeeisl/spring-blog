@@ -85,7 +85,7 @@
                 type="text"
                 th:field="*{text}"
                 placeholder="Text"
-                style="height: 200px"
+                style="min-height: 200px; height: auto"
               ></textarea>
               <label for="text">Text</label>
               <div
@@ -93,6 +93,10 @@
                 th:if="${#fields.hasErrors('text')}"
                 th:errors="*{text}"
               ></div>
+            </div>
+
+            <div class="alert alert-info mt-3" role="alert">
+              <i class="bi bi-info-circle"></i>&nbsp; Du kannst den Text durch Doppelklick formatieren.
             </div>
 
             <div class="form-floating mt-3" id="publishDatePicker">
@@ -124,5 +128,20 @@
     </div>
 
     <head th:replace="layout :: footer"></head>
+    <script>
+      (function () {
+        var editor = new MediumEditor("#text", {
+          toolbar: {
+            buttons: [
+              "bold",
+              "italic",
+              "anchor",
+              "h2",
+              "h3",
+            ],
+          },
+        });
+      })();
+    </script>
   </body>
 </html>

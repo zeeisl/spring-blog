@@ -47,7 +47,7 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
                 }
                 """.formatted(article.getId(), article.getAuthor().getId(), article.getBanner(), article.getTitle(),
                 article.getTeaser(),
-                article.getText(),
+                article.getTextAsPlainText(),
                 article.getCreateAt(), article.getPublishDate(),
                 String.join(", ", article.getTags().stream().map(t -> t.getName()).toList()));
 
@@ -83,7 +83,7 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
                 }
                 """.formatted(article.getId(), article.getAuthor().getId(), article.getBanner(), article.getTitle(),
                 article.getTeaser(),
-                article.getText(),
+                article.getTextAsPlainText(),
                 article.getCreateAt(), article.getPublishDate(),
                 String.join(", ", article.getTags().stream().map(t -> t.getName()).toList()));
 

@@ -9,7 +9,7 @@
         <div class="col-6 mt-4">
           <form
             action="#"
-            th:action="@{/articles/}"
+            th:action="@{/articles/create}"
             enctype="multipart/form-data"
             method="post"
             th:object="${createArticleForm}"
@@ -95,6 +95,10 @@
               ></div>
             </div>
 
+            <div class="alert alert-info mt-3" role="alert">
+              <i class="bi bi-info-circle"></i>&nbsp; Du kannst den Text durch Doppelklick formatieren.
+            </div>
+
             <div class="form-floating mt-3">
               <select
                 class="form-select"
@@ -153,7 +157,6 @@
             buttons: [
               "bold",
               "italic",
-              "underline",
               "anchor",
               "h2",
               "h3",

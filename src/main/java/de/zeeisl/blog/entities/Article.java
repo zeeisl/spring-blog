@@ -16,6 +16,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import org.jsoup.Jsoup;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Safelist;
 
 @Entity
 @Table(name = "articles")
@@ -68,7 +71,7 @@ public class Article {
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        this.title = Jsoup.parse(title).text();
     }
 
     public String getBanner() {
@@ -84,15 +87,25 @@ public class Article {
     }
 
     public void setTeaser(String teaser) {
-        this.teaser = teaser;
+        this.teaser = Jsoup.parse(teaser).text();
     }
 
     public String getText() {
         return this.text;
     }
 
+    public String getTextAsPlainText() {
+        return Jsoup.parse(this.text).text();
+    }
+
     public void setText(String text) {
-        this.text = text;
+        Safelist list = new Safelist();
+        list.addTags("p", "b", "i", "a", "h2", "h3", "br");
+        list.addAttributes("a", "href");
+
+        Cleaner c = new Cleaner(list);
+
+        this.text = c.clean(Jsoup.parse(text)).body().html();
     }
 
     public Date getPublishDate() {

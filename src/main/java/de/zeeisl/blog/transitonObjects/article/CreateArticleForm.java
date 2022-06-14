@@ -8,6 +8,9 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Length;
 import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.safety.Cleaner;
+import org.jsoup.safety.Safelist;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -43,10 +46,10 @@ public class CreateArticleForm {
 
     public Article toEntity(User author) {
         Article article = new Article();
-        article.setTitle(Jsoup.parse(this.getTitle()).text());
-        article.setBanner(Jsoup.parse(this.getBannerLink()).text());
-        article.setTeaser(Jsoup.parse(this.getTeaser()).text());
-        article.setText(Jsoup.parse(this.getText()).text());
+        article.setTitle(this.getTitle());
+        article.setBanner(this.getBannerLink());
+        article.setTeaser(this.getTeaser());
+        article.setText(this.getText());
         article.setCreateAt(new Date());
         if (this.getReleaseType() == 2) {
             article.setPublishDate(this.getPublishDate());

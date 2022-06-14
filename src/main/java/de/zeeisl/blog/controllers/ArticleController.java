@@ -78,7 +78,7 @@ public class ArticleController {
         return "articles/create";
     }
 
-    @PostMapping("/")
+    @PostMapping("/create")
     String store(@Valid CreateArticleForm createArticleForm, BindingResult bindingResult, Model model,
             RedirectAttributes redirectAttributes) {
 
@@ -93,15 +93,13 @@ public class ArticleController {
             createArticleForm.setBannerLink(path);
         }
 
-        System.out.println(createArticleForm.getText());
-
         if (bindingResult.hasErrors()) {
             return "articles/create";
         }
 
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Article article = createArticleForm.toEntity(user);
-        //articleRepository.save(article);
+        articleRepository.save(article);
         createTagsFromText(article);
         articleRepository.save(article);
 

@@ -49,10 +49,10 @@ public class EditArticleForm {
     }
 
     public Article updateEntity(Article article) {
-        article.setTitle(Jsoup.parse(this.getTitle()).text());
-        article.setBanner(Jsoup.parse(this.getBannerLink()).text());
-        article.setTeaser(Jsoup.parse(this.getTeaser()).text());
-        article.setText(Jsoup.parse(this.getText()).text());
+        article.setTitle(this.getTitle());
+        article.setBanner(this.getBannerLink());
+        article.setTeaser(this.getTeaser());
+        article.setText(this.getText());
 
         return article;
     }
