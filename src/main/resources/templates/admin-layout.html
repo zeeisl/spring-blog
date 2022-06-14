@@ -87,6 +87,8 @@
             <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><a class="dropdown-item" href="#">Profile</a></li>
           <li><hr class="dropdown-divider" /></li> -->
+          <li><a class="dropdown-item" th:href="@{/users/{id}(id=${#authentication.getPrincipal().getId()})}">Zum blog</a></li>
+          <hr class="dropdown-divider" /></li>
           <form th:action="@{/logout}" method="post">
             <li>
               <input

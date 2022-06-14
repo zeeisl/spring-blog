@@ -96,7 +96,8 @@
             </div>
 
             <div class="alert alert-info mt-3" role="alert">
-              <i class="bi bi-info-circle"></i>&nbsp; Du kannst den Text durch Doppelklick formatieren.
+              <i class="bi bi-info-circle"></i>&nbsp; Du kannst den Text durch
+              Doppelklick formatieren.
             </div>
 
             <div class="form-floating mt-3" id="publishDatePicker">
@@ -121,6 +122,8 @@
               type="submit"
               value="Änderungen speichern"
             />
+            <a class="btn btn-outline-secondary mt-3"
+            th:href="@{/articles/{id}(id=${editArticleForm.id})}">Zum Artikel <i class="bi bi-arrow-up-right"></i></a>
           </form>
           <p></p>
         </div>
@@ -132,13 +135,7 @@
       (function () {
         var editor = new MediumEditor("#text", {
           toolbar: {
-            buttons: [
-              "bold",
-              "italic",
-              "anchor",
-              "h2",
-              "h3",
-            ],
+            buttons: ["bold", "italic", "anchor", "h2", "h3"],
           },
         });
       })();

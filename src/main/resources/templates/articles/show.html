@@ -23,7 +23,7 @@
                 class="img-fluid rounded"
               />
             </div>
-            <div class="col-md-11 ">
+            <div class="col-md-11">
               <a
                 class="align-middle"
                 th:href="@{/users/}+${article.author.id}"
@@ -38,6 +38,13 @@
               </small>
             </div>
           </div>
+
+          <a
+            th:href="@{/articles/{id}/edit(id=${article.id})}"
+            class="btn btn-primary flex-fill d-block mt-3"
+            th:if="${#authentication.getPrincipal() != 'anonymousUser'} AND ${#authentication.getPrincipal().getId() == article.author.id}"
+            >Bearbeiten <i class="bi bi-pencil-fill"></i
+          ></a>
         </div>
       </div>
     </div>
@@ -58,16 +65,21 @@
       </div>
     </div>
 
-    <div class="row d-flex justify-content-center">
+    <div
+      class="row d-flex justify-content-center"
+      th:if="${#lists.size(similarArticles) > 0}"
+    >
       <div class="col-8 mt-5">
         <h2 class="h3 text-center">Ähnliche Artikel</h2>
         <!--  data-masonry='{"percentPosition": true }' -->
         <div class="row">
           <th:block th:each="article : ${similarArticles}">
-          <div class="p-0 col-12 col-md-6 col-lg-4">
-            <div th:replace="fragments/article/preview_card :: article (article=${article})"></div>
-          </div>
-        </th:block>
+            <div class="p-0 col-12 col-md-6 col-lg-4">
+              <div
+                th:replace="fragments/article/preview_card :: article (article=${article})"
+              ></div>
+            </div>
+          </th:block>
         </div>
       </div>
     </div>

@@ -19,12 +19,7 @@
           <a
             th:href="@{/articles/}+${article.id}"
             class="btn btn-outline-secondary flex-fill mx-1"
-            >Lesen</a
-          ><a
-            th:href="@{/articles/}+${article.id}+'/edit'"
-            class="btn btn-primary flex-fill mx-1"
-            th:if="${type == 'timeline'} AND ${#authentication.getPrincipal() != 'anonymousUser'} AND ${#authentication.getPrincipal().getId() == article.author.id}"
-            >Bearbeiten</a
+            >Lesen <i class="bi bi-arrow-up-right"></i></a
           >
         </div>
       </div>
