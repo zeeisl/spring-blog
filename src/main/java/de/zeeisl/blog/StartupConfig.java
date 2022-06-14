@@ -21,9 +21,11 @@ import org.springframework.web.client.RestTemplate;
 import com.github.javafaker.Faker;
 import com.github.javafaker.Lorem;
 
+import de.zeeisl.blog.entities.Advertisement;
 import de.zeeisl.blog.entities.Article;
 import de.zeeisl.blog.entities.Tag;
 import de.zeeisl.blog.entities.User;
+import de.zeeisl.blog.repositories.AdvertisementRepository;
 import de.zeeisl.blog.repositories.ArticleRepository;
 import de.zeeisl.blog.repositories.TagRepository;
 import de.zeeisl.blog.repositories.UserRepository;
@@ -42,6 +44,9 @@ public class StartupConfig {
 
     @Autowired
     TagRepository tagRepository;
+
+    @Autowired
+    AdvertisementRepository advertisementRepository;
 
     @Autowired
     ArticleSearchService articleSearchService;
@@ -114,10 +119,31 @@ public class StartupConfig {
     }
 
     // @Bean
-    // public CommandLineRunner commandLineRunner() {
-    //     return args -> {
-    //         storageService.init();
-    //     };
-    // }
+    void seedDBWithAds() {
+        Faker faker = new Faker(new Locale("de"));
+
+        // tags
+        List<Tag> tags = tagRepository.findAll();
+
+        for (int i = 0; i < 10; i++) {
+
+            Advertisement ad = new Advertisement();
+            ad.setSize("320x50");
+            ad.setImage("https://picsum.photos/id/%d/320/50".formatted(faker.number().numberBetween(500, 600)));
+            ad.setLink("https://www.google.de/");
+            ad.setStatus("active");
+
+            // add random subset of tags
+            if (faker.bool().bool()) {
+                int tagCount = faker.number().numberBetween(1, 5);
+                Collections.shuffle(tags);
+
+                List<Tag> articleTags = new ArrayList<Tag>(tags.subList(0, tagCount));
+                ad.setTags(articleTags);
+            }
+            advertisementRepository.save(ad);
+
+        }
+    }
 
 }

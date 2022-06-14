@@ -23,6 +23,9 @@ public class Tag {
     @ManyToMany(mappedBy = "tags")
     private List<Article> articles;
 
+    @ManyToMany(mappedBy = "tags")
+    private List<Advertisement> advertisements;
+
     public Tag() {
 
     }
@@ -49,6 +52,14 @@ public class Tag {
 
     public void setArticles(List<Article> articles) {
         this.articles = articles;
+    }
+
+    public List<Advertisement> getAdvertisements() {
+        return this.advertisements;
+    }
+
+    public void setAdvertisements(List<Advertisement> advertisements) {
+        this.advertisements = advertisements;
     }
 
 }

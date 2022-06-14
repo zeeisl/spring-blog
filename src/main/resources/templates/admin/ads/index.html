@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="admin-layout :: head"></head>
+  <body class="bg-light">
+    <head th:replace="admin-layout :: header"></head>
+
+    <div class="container mt-3">
+        <h1 class="h1">Werbung</h1>
+
+        <a class="btn btn-primary d-block mt-3" th:href="@{/admin/ads/create}">Neue Werbung erstellen <i class="ml-2 bi bi-plus-lg"></i></a>
+
+        <table class="table table-striped mt-3">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Bild</th>
+              <th scope="col">Link</th>
+              <th scope="col">Status</th>
+              <th scope="col">Bearbeiten</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="ad : ${ads}">
+              <th scope="row" th:text="${ad.id}"></th>
+              <td><img th:src="${ad.image}" /></td>
+              <td th:text="${ad.link}"></td>
+              <td>
+                <span
+                  class="badge rounded-pill"
+                  th:classappend="${ad.status == 'active'?'text-bg-success':'text-bg-danger'}"
+                  th:text="${ad.status == 'active'?'Aktiv':'Deaktiviert'}"
+                ></span>
+              </td>
+              <th scope="col"><a class="btn btn-primary" href="#"><i class="bi bi-pencil-fill"></i></a></th>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+
+    <div th:replace="admin-layout :: footer"></div>
+  </body>
+</html>
