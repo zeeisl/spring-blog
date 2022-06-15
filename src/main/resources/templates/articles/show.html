@@ -63,6 +63,11 @@
           <p th:utext="${article.text}"></p>
         </div>
       </div>
+      <div class="d-flex justify-content-center" th:if="${ad != null}">
+        <a th:href="${ad.link}">
+          <img th:src="${ad.image}" />
+        </a>
+      </div>
     </div>
 
     <div

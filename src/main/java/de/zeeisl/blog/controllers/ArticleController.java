@@ -1,6 +1,8 @@
 package de.zeeisl.blog.controllers;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -21,9 +23,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.zeeisl.blog.entities.Advertisement;
 import de.zeeisl.blog.entities.Article;
 import de.zeeisl.blog.entities.Tag;
 import de.zeeisl.blog.entities.User;
+import de.zeeisl.blog.repositories.AdvertisementRepository;
 import de.zeeisl.blog.repositories.ArticleRepository;
 import de.zeeisl.blog.repositories.TagRepository;
 import de.zeeisl.blog.services.ArticleSearchService;
@@ -42,6 +46,9 @@ public class ArticleController {
     ArticleSearchService articleSearchService;
 
     @Autowired
+    AdvertisementRepository advertisementRepository;
+
+    @Autowired
     TagRepository tagRepository;
 
     @Autowired
@@ -55,14 +62,24 @@ public class ArticleController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artikel nicht gefunden.");
         }
 
+        // replace tags with search-links
         String textWithTagLinks = replaceTagWithLinks(article.getText());
         article.setText(textWithTagLinks);
         model.addAttribute("article", article);
 
         String tags = String.join(" ", article.getTags().stream().map(t -> t.getName()).toList());
 
-        List<Article> similarArticles = articleSearchService.find(tags).stream().filter(a -> !a.getId().equals(id)).toList();
+        // get similar articles by tags
+        List<Article> similarArticles = articleSearchService.find(tags).stream().filter(a -> !a.getId().equals(id))
+                .toList();
         model.addAttribute("similarArticles", similarArticles);
+
+        // get random active ad
+        List<Advertisement> ads = advertisementRepository.findAllByStatus("active");
+        if (ads.size() > 0) {
+            Collections.shuffle(ads);
+            model.addAttribute("ad", ads.get(0));
+        }
 
         return "articles/show";
     }
