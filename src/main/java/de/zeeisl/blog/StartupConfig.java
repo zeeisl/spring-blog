@@ -6,20 +6,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import javax.mail.internet.MimeMessage;
-
-import org.apache.logging.log4j.message.SimpleMessage;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 import com.github.javafaker.Faker;
-import com.github.javafaker.Lorem;
 
 import de.zeeisl.blog.entities.Advertisement;
 import de.zeeisl.blog.entities.Article;
