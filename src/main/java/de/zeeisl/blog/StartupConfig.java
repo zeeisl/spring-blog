@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
@@ -52,7 +53,7 @@ public class StartupConfig {
     @Autowired
     RestTemplate restTemplate;
 
-    // @Bean
+    @Bean
     void seedData() {
         Faker faker = new Faker(new Locale("de"));
 
@@ -108,15 +109,8 @@ public class StartupConfig {
         }
 
         articleSearchService.putBulk(articleRepository.findAll());
-    }
 
-    // @Bean
-    void seedDBWithAds() {
-        Faker faker = new Faker(new Locale("de"));
-
-        // tags
-        List<Tag> tags = tagRepository.findAll();
-
+        // ads
         for (int i = 0; i < 10; i++) {
 
             Advertisement ad = new Advertisement();
@@ -137,5 +131,4 @@ public class StartupConfig {
 
         }
     }
-
 }

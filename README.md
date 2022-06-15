@@ -1,5 +1,11 @@
 # blog
 
+## build
+```sh
+docker build --build-arg JAR_FILE=build/libs/blog-0.0.1-SNAPSHOT.jar -t blog .
+docker run -p 8080:8080 blog:latest
+```
+
 ## elasticsearch tests
 ```
 PUT /articles
