@@ -1,6 +1,17 @@
 # blog
 
-## .vscode/launch.json example
+## setup dev
+```sh
+mkdir -p ./data/elasticsearch
+sudo chown -R 1000:1000 ./data/elasticsearch/
+# create .vscode/launch.json file
+
+docker compose up -d
+# wait until kibana can reach elasticsearch
+curl -XPUT "http://127.0.0.1:9200/articles"
+```
+
+### .vscode/launch.json example
 ```json
 {
   "version": "0.2.0",
@@ -31,14 +42,9 @@
 
 ## build and deploy
 ```sh
-# build jar
 ./gradlew build
-
-## first start only
-#mkdir -p ./data/elasticsearch
-#sudo chown -R 1000:1000 ./data/elasticsearch/
-
-docker compose -f ./docker-compose.deploy.yml up
+docker compose -f ./docker-compose.deploy.yml up --build
+# docker compose up -d --no-deps app --build
 ```
 
 ## elasticsearch tests
