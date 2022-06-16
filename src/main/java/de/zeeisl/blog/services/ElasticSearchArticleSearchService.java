@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -25,14 +26,20 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
     @Autowired
     ArticleRepository articleRepository;
 
-    public static final String ES_URL = "http://127.0.0.1:9200";
+    @Value("${elasticsearch.host}")
+    private String ES_HOST;
+
+    @Override
+    public String getUrl(){
+        return "http://%s:9200".formatted(ES_HOST);
+    }
 
     @Override
     public void create(Article article) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String url = ES_URL + "/articles/_doc/" + article.getId();
+        String url = getUrl() + "/articles/_doc/" + article.getId();
         String body = """
                 {
                     "id": "%d",
@@ -68,7 +75,7 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String url = ES_URL + "/articles/_doc/" + article.getId();
+        String url = getUrl() + "/articles/_doc/" + article.getId();
         String body = """
                 {
                     "id": "%d",
@@ -97,7 +104,7 @@ public class ElasticSearchArticleSearchService implements ArticleSearchService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        String url = ES_URL + "/articles/_search";
+        String url = getUrl() + "/articles/_search";
         String body = """
                 {
                     "query": {

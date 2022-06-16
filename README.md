@@ -1,9 +1,49 @@
 # blog
 
-## build
+## .vscode/launch.json example
+```json
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch BlogApplication",
+      "request": "launch",
+      "mainClass": "de.zeeisl.blog.BlogApplication",
+      "projectName": "blog",
+      "env": {
+        "DATABASE_HOST": "127.0.0.1",
+        "DATABASE_NAME": "blog",
+        "DATABASE_USERNAME": "",
+        "DATABASE_PASSWORD": "",
+        "HIBERNATE_DLL_AUTO": "create", // create-drop, update
+        "SMTP_HOST": "",
+        "SMTP_PORT": "587",
+        "SMTP_USERNAME": "",
+        "SMTP_PASSWORD": "",
+        "ELASTICSEARCH_HOST": "127.0.0.1"
+      }
+    }
+  ]
+}
+
+```
+
+## build and deploy
 ```sh
-docker build --build-arg JAR_FILE=build/libs/blog-0.0.1-SNAPSHOT.jar -t blog .
-docker run -p 8080:8080 blog:latest
+# build jar
+./gradlew build
+
+# build docker image
+cd deployment
+cp ../build/libs/blog-0.0.1-SNAPSHOT.jar main.jar
+docker build -t blog:latest .
+
+## first start only
+#mkdir -p ./data/elasticsearch
+#sudo chown -R 1000:1000 ./data/elasticsearch/
+
+docker compose up
 ```
 
 ## elasticsearch tests

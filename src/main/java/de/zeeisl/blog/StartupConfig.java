@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,7 +24,6 @@ import de.zeeisl.blog.repositories.ArticleRepository;
 import de.zeeisl.blog.repositories.TagRepository;
 import de.zeeisl.blog.repositories.UserRepository;
 import de.zeeisl.blog.services.ArticleSearchService;
-import de.zeeisl.blog.services.ElasticSearchArticleSearchService;
 import de.zeeisl.blog.services.StorageService;
 
 @Configuration
@@ -53,12 +53,27 @@ public class StartupConfig {
     @Autowired
     RestTemplate restTemplate;
 
+    @Value("${spring.jpa.hibernate.ddl-auto}")
+    String hibernate_ddl_auto_mode;
+
     @Bean
     void seedData() {
+        if(hibernate_ddl_auto_mode.equals("update")){
+            System.out.println("SKIPPING SEEDDATA");
+            return;
+        }
+
+        if(hibernate_ddl_auto_mode.equals("create") && articleRepository.count() > 0){
+            System.out.println("SKIPPING SEEDDATA");
+            return;
+        }
+
+        System.out.println("START SEEDDATA");
+
         Faker faker = new Faker(new Locale("de"));
 
         // clean up es-index
-        String url = ElasticSearchArticleSearchService.ES_URL + "/articles";
+        String url = articleSearchService.getUrl() + "/articles";
         restTemplate.delete(url);
         restTemplate.put(url, null);
 
@@ -130,5 +145,6 @@ public class StartupConfig {
             advertisementRepository.save(ad);
 
         }
+        System.out.println("END SEEDDATA");
     }
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import de.zeeisl.blog.entities.Article;
 
 public interface ArticleSearchService {
+    public String getUrl();
     public void create(Article article);
     public void putBulk(List<Article> articles);
     public void update(Article article);
