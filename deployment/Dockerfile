@@ -4,7 +4,6 @@ FROM openjdk:17-jdk
 # USER spring:spring
 
 WORKDIR /app
-ARG JAR_FILE=target/*.jar
-COPY ${JAR_FILE} main.jar
 RUN mkdir uploads static
+COPY ./main.jar main.jar
 ENTRYPOINT ["java", "-jar", "main.jar"]
