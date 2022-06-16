@@ -34,16 +34,11 @@
 # build jar
 ./gradlew build
 
-# build docker image
-cd deployment
-cp ../build/libs/blog-0.0.1-SNAPSHOT.jar main.jar
-docker build -t blog:latest .
-
 ## first start only
 #mkdir -p ./data/elasticsearch
 #sudo chown -R 1000:1000 ./data/elasticsearch/
 
-docker compose up
+docker compose -f ./docker-compose.deploy.yml up
 ```
 
 ## elasticsearch tests
