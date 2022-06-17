@@ -39,6 +39,7 @@ out/
 ### data ###
 /uploads
 /data
+.env
 
 ### logs ###
 *.log

@@ -10,14 +10,14 @@ services:
       - 8080:8080
     environment:
       - DATABASE_HOST=database
-      - DATABASE_NAME=blog
+      - DATABASE_NAME=${DATABASE_NAME}
       - DATABASE_USERNAME=root
-      - DATABASE_PASSWORD=password
-      - HIBERNATE_DLL_AUTO=create-drop
-      - SMTP_HOST=smtp.strato.de
-      - SMTP_PORT=587
-      - SMTP_USERNAME=noreply@zeeshan-islam.de
-      - SMTP_PASSWORD=pzWF8jsJ59UG7YD
+      - DATABASE_PASSWORD=${DATABASE_PASSWORD}
+      - HIBERNATE_DLL_AUTO=${HIBERNATE_DLL_AUTO}
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USERNAME=${SMTP_USERNAME}
+      - SMTP_PASSWORD=${SMTP_PASSWORD}
       - ELASTICSEARCH_HOST=elasticsearch
     depends_on:
       elasticsearch:
@@ -25,8 +25,8 @@ services:
   database:
     image: mariadb:10.3
     environment:
-      - MARIADB_ROOT_PASSWORD=password
-      - MARIADB_DATABASE=blog
+      - MARIADB_ROOT_PASSWORD=${DATABASE_PASSWORD}
+      - MARIADB_DATABASE=${DATABASE_NAME}
     volumes:
       - ./data/mariadb:/var/lib/mysql
   phpmyadmin:
@@ -39,7 +39,7 @@ services:
       - PMA_ARBITRARY=1
       - PMA_HOST=database
       - PMA_USER=root
-      - PMA_PASSWORD=password
+      - PMA_PASSWORD=${DATABASE_PASSWORD}
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.11.0
     environment:
