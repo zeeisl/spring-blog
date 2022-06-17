@@ -23,7 +23,6 @@ services:
       - PMA_USER=root
       - PMA_PASSWORD=password
   elasticsearch:
-    container_name: elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:7.11.0
     environment:
       - discovery.type=single-node
@@ -37,7 +36,6 @@ services:
     volumes:
       - ./data/elasticsearch:/usr/share/elasticsearch/data
   kibana:
-    container_name: kibana
     image: docker.elastic.co/kibana/kibana:7.11.0
     environment:
       - ELASTICSEARCH_HOSTS=http://elasticsearch:9200

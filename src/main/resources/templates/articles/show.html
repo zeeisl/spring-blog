@@ -64,9 +64,13 @@
         </div>
       </div>
       <div class="d-flex justify-content-center" th:if="${ad != null}">
-        <a th:href="${ad.link}">
-          <img th:src="${ad.image}" />
-        </a>
+        <div class="border border-dark p-1">
+          Werbung:
+          <br />
+          <a th:href="${ad.link}">
+            <img th:src="${ad.image}" />
+          </a>
+        </div>
       </div>
     </div>
 
@@ -76,8 +80,7 @@
     >
       <div class="col-10 col-md-8 mt-5">
         <h2 class="h3 text-center">Ähnliche Artikel</h2>
-        <!--  data-masonry='{"percentPosition": true }' -->
-        <div id="grid" class="row">
+        <div id="grid" class="row" data-masonry='{"percentPosition": true }'>
           <th:block th:each="article : ${similarArticles}">
             <div class="p-0 col-12 col-md-6 col-lg-4">
               <div
