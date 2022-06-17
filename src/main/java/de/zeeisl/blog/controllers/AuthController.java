@@ -10,7 +10,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import de.zeeisl.blog.auth.AuthContainer;
 import de.zeeisl.blog.entities.User;
 import de.zeeisl.blog.repositories.UserRepository;
 import de.zeeisl.blog.transitonObjects.user.RegisterForm;
@@ -36,10 +36,13 @@ public class AuthController {
     @Autowired
     JavaMailSender javaMailSender;
 
+    @Autowired
+    AuthContainer authContainer;
+
     @GetMapping("/login")
     String login(Model model) {
-        if(SecurityContextHolder.getContext().getAuthentication().isAuthenticated() && !(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof String)){
-            User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if(authContainer.isUserLoggedIn()){
+            User authUser = authContainer.getLoggedInUser();
             return "redirect:/users/%d".formatted(authUser.getId());
         }
         return "auth/login";
@@ -86,10 +89,12 @@ public class AuthController {
         if (user != null) {
             String passwordResetToken = RandomStringUtils.randomAlphanumeric(32);
             user.setPasswordResetHash(passwordResetToken);
+            // deativate account during reset process
             user.setEnabled(false);
             userRepository.save(user);
 
             try {
+                // logout user if logged in
                 request.logout();
             } catch (ServletException e) {
 

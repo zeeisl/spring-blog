@@ -18,6 +18,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     CustomUserDetailsService userDetailsService;
 
     @Bean
+    public AuthContainer getAuthContainer() {
+        return new AuthContainer();
+    }
+
+    @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

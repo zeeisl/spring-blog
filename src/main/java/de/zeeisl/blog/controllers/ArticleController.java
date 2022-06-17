@@ -1,9 +1,9 @@
 package de.zeeisl.blog.controllers;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,7 +11,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import de.zeeisl.blog.auth.AuthContainer;
 import de.zeeisl.blog.entities.Advertisement;
 import de.zeeisl.blog.entities.Article;
 import de.zeeisl.blog.entities.Tag;
@@ -53,6 +53,9 @@ public class ArticleController {
     @Autowired
     StorageService storageService;
 
+    @Autowired
+    AuthContainer authContainer;
+
     @GetMapping("/{id}")
     String show(@PathVariable(name = "id", required = true) Long id, Model model) {
         Article article = articleRepository.findPublishedArticleById(id, new Date());
@@ -67,16 +70,17 @@ public class ArticleController {
         model.addAttribute("article", article);
 
         // get similar articles by tags
-        String tagsAsString = String.join(" ", article.getTags().stream().map(t -> t.getName()).toList());
-        List<Article> similarArticles = articleSearchService.find(tagsAsString).stream().filter(a -> !a.getId().equals(id))
+        String tagsAsConcatString = String.join(" ", article.getTags().stream().map(t -> t.getName()).toList());
+        List<Article> similarArticles = articleSearchService.find(tagsAsConcatString).stream()
+                .filter(a -> !a.getId().equals(id))
                 .toList();
         model.addAttribute("similarArticles", similarArticles);
 
         // get random active ad
         List<Advertisement> ads = advertisementRepository.findAllByStatus("active");
         if (ads.size() > 0) {
-            Collections.shuffle(ads);
-            model.addAttribute("ad", ads.get(0));
+            Advertisement ad = ads.get(new Random().nextInt(0, ads.size() - 1));
+            model.addAttribute("ad", ad);
         }
 
         return "articles/show";
@@ -112,7 +116,7 @@ public class ArticleController {
             return "articles/create";
         }
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = authContainer.getLoggedInUser();
         Article article = createArticleForm.toEntity(user);
         articleRepository.save(article);
         createTagsFromText(article);
@@ -141,7 +145,7 @@ public class ArticleController {
 
     @GetMapping("/{id}/edit")
     String edit(@PathVariable(name = "id", required = true) Long id, EditArticleForm editArticleForm) {
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = authContainer.getLoggedInUser();
 
         Article article = articleRepository.findArticleByIdAndAuthor(id, user);
         if (article == null) {
@@ -160,7 +164,7 @@ public class ArticleController {
             return "articles/edit";
         }
 
-        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = authContainer.getLoggedInUser();
         Article article = articleRepository.findArticleByIdAndAuthor(id, user);
         if (article == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Artikel nicht gefunden.");

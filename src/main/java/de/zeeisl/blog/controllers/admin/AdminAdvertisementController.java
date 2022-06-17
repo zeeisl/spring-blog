@@ -53,15 +53,18 @@ public class AdminAdvertisementController {
     String store(@Valid CreateAdvertisementForm createAdvertisementForm, BindingResult bindingResult,
             RedirectAttributes redirectAttributes) {
         if (createAdvertisementForm.getImage() == null && createAdvertisementForm.getImageFile().isEmpty()) {
+            // no ad-image set
             bindingResult.rejectValue("image", "error.createAdvertisementForm", "Die Werbung muss ein Bild enhalten.");
         } else if (!createAdvertisementForm.getImageFile().isEmpty()) {
+            // ad-image set
             try {
                 BufferedImage imgFileBuffer = ImageIO.read(createAdvertisementForm.getImageFile().getInputStream());
                 if (imgFileBuffer.getWidth() != 320 || imgFileBuffer.getHeight() != 50) {
+                    // wrong ad-image size
                     bindingResult.rejectValue("image", "error.createAdvertisementForm",
                             "Das Werbebild muss 320x50 Pixel groß sein.");
                 } else {
-                    // move image
+                    // valid ad-image
                     String path = storageService.store(createAdvertisementForm.getImageFile());
                     createAdvertisementForm.setImage(path);
                 }

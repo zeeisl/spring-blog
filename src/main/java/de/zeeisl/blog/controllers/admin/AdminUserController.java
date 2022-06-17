@@ -16,7 +16,6 @@ import de.zeeisl.blog.entities.User;
 import de.zeeisl.blog.repositories.UserRepository;
 
 @Controller
-// @RequestMapping("/admin/users")
 public class AdminUserController {
 
     @Autowired
@@ -35,6 +34,7 @@ public class AdminUserController {
     String loginAsUserTest(@PathVariable(name = "id", required = true) Long id) {
         User user = userRepository.findById(id).get();
 
+        // auth as user
         Authentication authentication = new UsernamePasswordAuthenticationToken(user, null,
                 AuthorityUtils.createAuthorityList(user.getUserRole()));
         SecurityContextHolder.getContext().setAuthentication(authentication);

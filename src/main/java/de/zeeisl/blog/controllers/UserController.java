@@ -6,7 +6,6 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
 
+import de.zeeisl.blog.auth.AuthContainer;
 import de.zeeisl.blog.entities.Article;
 import de.zeeisl.blog.entities.SocialmediaLinks;
 import de.zeeisl.blog.entities.User;
@@ -41,6 +41,9 @@ public class UserController {
 
     @Autowired
     StorageService storageService;
+    
+    @Autowired
+    AuthContainer authContainer;
 
     @GetMapping("/{id}")
     String timeline(@PathVariable(name = "id", required = true) Long id, Model model) {
@@ -52,7 +55,6 @@ public class UserController {
 
         User user = userMaybe.get();
         model.addAttribute("user", user);
-        model.addAttribute("type", "timeline");
 
         List<Article> articles = articleRepository.findPublishedArticleOfUser(user, new Date());
         model.addAttribute("articles", articles);
@@ -62,7 +64,7 @@ public class UserController {
 
     @GetMapping("/{id}/edit")
     String edit(@PathVariable(name = "id", required = true) Long id, EditUserdataForm editUserdataForm) {
-        User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User authUser = authContainer.getLoggedInUser();
 
         if (!authUser.getId().equals(id)) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN);
@@ -82,7 +84,7 @@ public class UserController {
 
     @PostMapping("/{id}/edit")
     String store(@Valid EditUserdataForm editUserdataForm, BindingResult bindingResult, Model model) {
-        User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User authUser = authContainer.getLoggedInUser();
 
         if (bindingResult.hasErrors()) {
             System.out.println(bindingResult.getErrorCount());
@@ -108,12 +110,11 @@ public class UserController {
         model.addAttribute("success", "Benutzerdaten erfolgreich gespeichert.");
 
         return "users/edit";
-        // return String.format("redirect:/users/%d", user.getId());
     }
 
     @GetMapping("/socialmedia")
     String socialmediaLinks(Model model) {
-        User user = getLoggedInUser();
+        User user = authContainer.getLoggedInUser();
 
         List<SocialmediaLinks> links = user.getSocialmediaLinks();
         model.addAttribute("links", links);
@@ -124,7 +125,7 @@ public class UserController {
     @PostMapping("/socialmedia")
     String socialmediaLinksStore(@RequestParam(name = "link", required = true) String link,
             @RequestParam(name = "type", required = true) String type) {
-        User user = getLoggedInUser();
+        User user = authContainer.getLoggedInUser();
 
         SocialmediaLinks linkObject = new SocialmediaLinks();
 
@@ -144,7 +145,7 @@ public class UserController {
 
     @GetMapping("/socialmedia/{id}/delete")
     String socialmediaLinksStore(@PathVariable(name = "id", required = true) Long id) {
-        User user = getLoggedInUser();
+        User user = authContainer.getLoggedInUserOrFail();
 
         List<SocialmediaLinks> links = user.getSocialmediaLinks().stream().filter(l -> l.getId().equals(id)).toList();
         if (links.size() > 0) {
@@ -152,17 +153,6 @@ public class UserController {
         }
 
         return "redirect:/users/socialmedia";
-    }
-
-    private User getLoggedInUser() {
-        User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        Optional<User> userMaybe = userRepository.findById(authUser.getId());
-        if (userMaybe.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nutzer nicht gefunden.");
-        }
-
-        return userMaybe.get();
     }
 
 }
