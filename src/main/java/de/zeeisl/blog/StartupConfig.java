@@ -74,7 +74,7 @@ public class StartupConfig {
 
         // clean up es-index
         String url = articleSearchService.getUrl() + "/articles";
-        restTemplate.delete(url);
+        // restTemplate.delete(url);
         restTemplate.put(url, null);
 
         // tags

@@ -2,6 +2,8 @@
 
 > A blogging website made with spring boot
 
+![blog preview](preview.gif)
+
 ## Features
 - Write articles with formatting and tags
 - MulitUser support
@@ -19,12 +21,10 @@
 
 ## Build and Deploy
 ```sh
-./gradlew build
-
 # create a .env file from template.env
 cp template.env .env
 
-docker compose -f docker-compose.deploy.yml --env-file .env up --build
+./gradlew build && docker compose -f docker-compose.deploy.yml --env-file .env up --build
 # docker compose up -d --no-deps app --build
 ```
 
@@ -36,7 +36,7 @@ sudo chown -R 1000:1000 ./data/elasticsearch/
 # create a .env file from template.env
 cp template.env .env
 
-docker compose up -d #dev env
+docker compose up #dev env
 # wait until kibana can reach elasticsearch
 curl -XPUT "http://127.0.0.1:9200/articles"
 ```

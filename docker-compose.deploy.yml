@@ -49,8 +49,8 @@ services:
       memlock:
         soft: -1
         hard: -1
-    volumes:
-      - ./data/elasticsearch:/usr/share/elasticsearch/data
+    # volumes:
+    #   - ./data/elasticsearch:/usr/share/elasticsearch/data
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9200"]
       interval: 10s
