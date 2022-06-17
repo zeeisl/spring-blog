@@ -66,10 +66,9 @@ public class ArticleController {
         article.setText(textWithTagLinks);
         model.addAttribute("article", article);
 
-        String tags = String.join(" ", article.getTags().stream().map(t -> t.getName()).toList());
-
         // get similar articles by tags
-        List<Article> similarArticles = articleSearchService.find(tags).stream().filter(a -> !a.getId().equals(id))
+        String tagsAsString = String.join(" ", article.getTags().stream().map(t -> t.getName()).toList());
+        List<Article> similarArticles = articleSearchService.find(tagsAsString).stream().filter(a -> !a.getId().equals(id))
                 .toList();
         model.addAttribute("similarArticles", similarArticles);
 

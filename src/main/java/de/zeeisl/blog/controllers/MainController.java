@@ -26,14 +26,4 @@ public class MainController {
         return "articles/index";
     }
 
-    // @GetMapping("/article")
-    // String article() {
-    //     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-    //     String currentPrincipalName = authentication.getName();
-
-    //     System.out.println(String.format("AUTH %s", currentPrincipalName));
-
-    //     return "article";
-    // }
-
 }
